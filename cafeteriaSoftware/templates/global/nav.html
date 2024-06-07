@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{% static 'css/style-inventario.css' %}" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Jaro:opsz@6..72&family=Lilita+One&family=Oswald:wght@200..700&family=Poetsen+One&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style-nav-inventario.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/output.css' %}" />
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="nav">
+    <div class="nav-inventario" id="nav-inventario">
+      <!-- <div class="logo-nav-inventario">
+        <img class="logo" src="{% static 'img/logo-sena-blanco.png' %}" width="40px" />
+      </div> -->
+      <div class="nav-funciones">
+        <div class="funcion" id="inicio-nav">
+          <img type="icon" src="{% static 'img/casa.png' %}" />
+          <p>Inicio</p>
+        </div>
+        <div class="funcion" id="productos-nav">
+          <img type="icon" src="{% static 'img/producto.png' %}" />
+          <p>Productos</p>
+        </div>
+        <div class="funcion" id="carrito-nav">
+          <img type="icon" src="{% static 'img/carrito.png' %}"  />
+          <p>Carrito</p>
+        </div>
+        <div class="funcion" id="inventario-nav">
+          <img type="icon" src="{% static 'img/inventario.png' %}" />
+          <p>Inventario</p>
+        </div>
+        <div class="funcion" id="finanzas-nav">
+          <img type="icon" src="{% static 'img/finanzas.png' %}" />
+          <p>Finanzas</p>
+        </div>
+        
+
+        <div class="texto-funcion">
+          <p>Equipo</p>
+        </div>
+        <div class="funcion" id="admin-nav">
+          <img type="icon" src="{% static 'img/admin.png' %}" />
+          <p>Admin</p>
+        </div>
+        <div class="funcion" id="empleados-nav">
+          <img type="icon" src="{% static 'img/cuenta.png' %}" />
+          <p>Empleados</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</body>
+</html>

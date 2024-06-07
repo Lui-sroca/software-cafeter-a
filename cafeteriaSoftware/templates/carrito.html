@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Jaro:opsz@6..72&family=Lilita+One&family=Oswald:wght@200..700&family=Poetsen+One&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style-nav-inventario.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/output.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/style-inventario.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/style-carrito.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/ventana-emergente-inventario.css' %}" />
+  <title>Inventario SoftCoffe</title>
+</head>
+
+<body>
+  <div class="contenedor">
+    <div class="izquierda">
+      {% include 'global/nav.html' %}
+      <div class="derecha">
+        {% include 'global/logo-header.html' %}
+        <div class="table-container">
+          <table id="carrito">
+              <thead>
+                  <tr>
+                      <th>Nombre</th>
+                      <th>Cantidad</th>
+                      <th>Precio Unitario</th>
+                      <th>Precio Total</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  
+              </tbody>
+          </table>
+          <div class="descuento">
+            <h2>Descuento: </h2>
+            <select id="descuentoSelect">
+              <option value="0">---</option>
+              <option value="1">Estudiante</option>
+              <option value="2">Profesor</option>
+          </select>
+          </div>
+          <div class="precio">
+            <h2>Total: </h2>
+            <input id="precio-total">
+          </div>
+          <div class="dinero">
+            <h2>Dinero recibido: </h2>
+            <input id="dinero-recibido" type="number">
+          </div>
+          <button id="boton-pagar">
+            Pagar
+          </button>
+          <div class="">
+            <h2>Vuelto: </h2>
+            <input id="vuelto-cliente" type="number">
+          </div>
+      </div>
+      </div>
+    </div>
+</body>
+<script src="{% static 'js/nav.js' %}"></script>
+<script src="{% static 'js/listar_productos.js' %}"></script>
+
+</html>

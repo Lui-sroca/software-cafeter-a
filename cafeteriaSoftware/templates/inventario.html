@@ -1,0 +1,221 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Jaro:opsz@6..72&family=Lilita+One&family=Oswald:wght@200..700&family=Poetsen+One&display=swap"
+    rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/output.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/style-inventario.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/style-nav-inventario.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/ventana-emergente-inventario.css' %}" />
+  <title>Inventario SoftCoffe</title>
+</head>
+
+<body>
+  <div class="contenedor">
+
+    <div class="izquierda">
+      {% include 'global/nav.html' %}
+      <div class="derecha">
+        {% include 'global/logo-header.html' %}
+        <div class="head-inventario">
+          <div class="titulo-inventario">
+            <img class="mr-4" type="icon" src="{% static 'img/inventario2.png' %}" width="40px" />
+            <h1>Inventario</h1>
+          </div>
+          <div class="agregar-producto">
+            <button class="  bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center "
+              id="boton-agregar">
+              <img class="w-10 text-center" src="{% static 'img/mas.png' %}" alt="Agregar Producto" />
+              <span>Agregar</span>
+            </button>
+          </div>
+        </div>
+
+        <main class="main">
+          <div class="container-tabla-productos">
+            <table class="tabla-productos">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Descripción</th>
+                  <th>Imagen</th>
+                  <th>Precio</th>
+                  <th>Estado</th>
+                  <th>Cantidad</th>
+                  <th>Categoria</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for producto in productos %}  
+                <tr>
+                  <td class="border">{{ producto.id }}</td>
+                  <td class="border">{{ producto.nombre }}</td>
+                  <td class="border">{{ producto.descripcion }}</td>
+                  <td class="border">
+                    <img src="{{ producto.imagen }}" alt="Imagen de {{ producto.nombre }}" class="imagen-producto">
+                  </td>
+                  <td class="border">{{ producto.precio }}</td>
+                  <td class="border">{{ producto.estado }}</td>
+                  <td class="border">{{ producto.cantidad }}</td>
+                  <td class="border">{{ producto.categoria.categoria_producto }}</td>
+                  <td class="border acciones">
+                    <button class="btn actualizar-btn" data-id="{{ producto.id }}">Actualizar</button>
+                    <button class="btn eliminar-btn" data-id="{{ producto.id }}">Eliminar</button>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+        </main>
+        <meta name="csrf-token" content="{{ csrf_token }}">
+
+        <div id="modal-actualizar" class="modal-background">
+          <div class="form-container">
+            <h2>Actualizar Producto</h2>
+            <form action="" method="POST">
+              <div class="flex">
+                <div class="flex">
+                  <div class="mb-4">
+                    <label for="codigo">Código del Producto:</label>
+                    <input id="id-actualizar" type="text" placeholder="Código del producto" disabled>
+                  </div>
+                </div>
+                <div class="mb-4">
+                  <label for="nombre">Nombre del Producto:</label>
+                  <input id="nombre-actualizar" type="text" placeholder="Nombre del producto">
+                </div>
+                <div class="mb-4">
+                  <label for="descripcion">Descripción:</label>
+                  <input id="descripcion-actualizar" type="text" placeholder="Descripción del producto">
+                </div>
+                <div class="mb-4">
+                  <label for="imagen">Imagen:</label>
+                  <input id="imagen-actualizar" type="text" placeholder="Descripción del producto">
+                </div>
+                <div class="mb-4">
+                  <label for="precio">Precio:</label>
+                  <input id="precio-actualizar" type="number" placeholder="Precio del producto">
+                </div>
+
+              </div>
+              <div class="flex">
+                <div class="mb-4">
+                  <label for="estado">Estado:</label>
+                  <select id="estado-actualizar">
+                    <option value="activo">Activo</option>
+                    <option value="inactivo">Inactivo</option>
+                  </select>
+                </div>
+                <div class="mb-4">
+                  <label for="cantidad">Cantidad:</label>
+                  <input id="cantidad-actualizar" type="number" placeholder="Cantidad del producto">
+                </div>
+                <div class="mb-4">
+                  <label for="categoria">Categoría:</label>
+                  <select id="categoria-actualizar">
+                    <option value="1">Bebidas</option>
+                    <option value="2">Pasteles</option>
+                    <option value="3">Galletas</option>
+                    <option value="4">cafees</option>
+                  </select>
+                </div>
+              </div>
+
+
+
+              <div class="btn-container">
+                <button id="cerrarBtnActualizar" class="boton-cerrar" type="button">Cerrar</button>
+                <button id="ActualizarBtn" class="boton-guardar" type="button">Actualizar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+
+        <div id="modal" class="modal-background">
+          <div class="form-container">
+            <h2>Agregar Producto</h2>
+            <div action="" method="POST">
+              <div class="flex">
+
+                <div class="mb-4">
+                  <label for="nombre">Nombre del Producto:</label>
+                  <input id="nombre" type="text" placeholder="Nombre del producto">
+                </div>
+                <div class="mb-4">
+                  <label for="descripcion">Descripción:</label>
+                  <input id="descripcion" type="text" placeholder="Descripción del producto">
+                </div>
+                <div class="mb-4">
+                  <label for="imagen">Imagen:</label>
+                  <input id="imagen" type="text" placeholder="imagen del producto">
+                </div>
+                <div class="mb-4">
+                  <label for="precio">Precio:</label>
+                  <input id="precio" type="number" placeholder="Precio del producto">
+                </div>
+
+              </div>
+              <div class="flex">
+                <div class="mb-4">
+                  <label for="estado">Estado:</label>
+                  <select id="estado">
+                    <option value="activo">Activo</option>
+                    <option value="inactivo">Inactivo</option>
+                  </select>
+                </div>
+                <div class="mb-4">
+                  <label for="cantidad">Cantidad:</label>
+                  <input id="cantidad" type="number" placeholder="Cantidad del producto">
+                </div>
+                <div class="mb-4">
+                  <label for="categoria">Categoría:</label>
+                  <select id="categoria">
+                    <option value="1">Bebidas</option>
+                    <option value="2">Pasteles</option>
+                    <option value="3">Galletas</option>
+                    <option value="4">cafees</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+
+
+            <div class="btn-container">
+              <button id="cerrarBtn" class="boton-cerrar" type="button">Cerrar</button>
+              <button id="boton-guardar" class="boton-guardar" type="submit">Agregar</button>
+            </div>
+            </form>
+          </div>
+        </div>
+
+
+
+</body>
+<script src="{% static 'js/nav.js' %}"></script>
+<script src="{% static 'js/agregar_producto.js' %}"></script>
+<script src="{% static 'js/actualizar_producto.js' %}"></script>
+<script src="{% static 'js/eliminar_producto.js' %}"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+
+</html>
