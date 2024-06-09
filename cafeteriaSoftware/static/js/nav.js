@@ -39,7 +39,8 @@ document.addEventListener("DOMContentLoaded", function() {
         "inventario-nav": "/inventario/",
         "finanzas-nav": "/finanzas/",
         "admin-nav": "/admin_interfaz/",
-        "empleados-nav": "/empleados/"
+        "empleados-nav": "/empleados/",
+        "pedidos-nav": "/listarPedido/"
     };
 
     for (let id in navItems) {

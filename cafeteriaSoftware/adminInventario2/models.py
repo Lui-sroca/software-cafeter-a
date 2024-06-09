@@ -16,7 +16,6 @@ class Productos(models.Model):
     estado = models.CharField()
     cantidad = models.IntegerField()
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
-   
 
 
 class Ventas(models.Model):
@@ -28,3 +27,18 @@ class Ventas(models.Model):
     descuento = models.IntegerField()
     tipo_descuento = models.CharField(max_length=1000)
     total_precio_venta = models.IntegerField()
+
+
+class numeroOrden(models.Model):
+    id = models.AutoField(primary_key=True)
+    numero = models.IntegerField()
+
+
+class Ordenes(models.Model):
+    id = models.AutoField(primary_key=True)
+    numero = models.IntegerField()
+    nombre_cliente = models.CharField(max_length=100)
+    correo_cliente = models.EmailField()
+    estado = models.CharField(default = "En proceso")
+    detalles = models.TextField()
+    fecha_creacion = models.DateField(auto_now_add=True)
