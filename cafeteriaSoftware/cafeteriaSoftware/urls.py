@@ -22,6 +22,7 @@ from adminInventario2.views import *
 from inicioSesion.views import *
 from carrito.views import *
 from finanzas.views import *
+from ordenes.views import *
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -37,5 +38,6 @@ urlpatterns = [
     path("datosActualizados/", actualizarDatos),
     path("datosEliminados/", eliminarProducto),
     path("guardarVentas/", guardarVentas),
+    path("recibirOrden/", ordenRecibida),
     path('', CustomLoginView.as_view(), name='login'),
 ]

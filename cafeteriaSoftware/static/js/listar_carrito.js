@@ -43,20 +43,19 @@ function mostrarCarrito() {
 function cambiarCantidad(index, delta, cantidadMaxima) {
   let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   if (carrito[index]) {
-    
     if (carrito[index].cantidad < 1) {
       carrito[index].cantidad = 1; // Evitar cantidades menores a 1
     }
-    if(carrito[index].cantidad >= cantidadMaxima){
-        alert("cantidad limite alcanzada")
-    }
-    else{
-        carrito[index].cantidad += delta;
+    if (carrito[index].cantidad + delta <= cantidadMaxima && carrito[index].cantidad + delta >= 1) {
+      carrito[index].cantidad += delta;
+    } else if (carrito[index].cantidad + delta > cantidadMaxima) {
+      alert("¡Cantidad límite alcanzada!");
     }
     localStorage.setItem("carrito", JSON.stringify(carrito));
     mostrarCarrito(); // Actualizar la visualización del carrito
   }
 }
+  
 
 function eliminarItem(index) {
   let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
