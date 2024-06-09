@@ -28,13 +28,9 @@ INSTALLED_APPS = [
     'interfazInventario',
     'adminInventario2',
     'inicioSesion',
-<<<<<<< HEAD
     'corsheaders',
     'ordenes',
     # Agregar la aplicación 'corsheaders'
-=======
-    'corsheaders',  # Agregar la aplicación 'corsheaders'
->>>>>>> 9f2a2a773688fb5a82b12142bdb20c2f9b383fbb
 ]
 
 MIDDLEWARE = [
