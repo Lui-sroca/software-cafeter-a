@@ -38,7 +38,11 @@ urlpatterns = [
     path("datosActualizados/", actualizarDatos),
     path("datosEliminados/", eliminarProducto),
     path("guardarVentas/", guardarVentas),
+<<<<<<< HEAD
     path("obtenerOrdenes/", obtenerOrden),
     path("listarPedido/", listar_pedidos),
+=======
+    path("recibirOrden/", ordenRecibida),
+>>>>>>> 9f2a2a773688fb5a82b12142bdb20c2f9b383fbb
     path('', CustomLoginView.as_view(), name='login'),
 ]
