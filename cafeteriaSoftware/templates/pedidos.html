@@ -1,37 +1,61 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/style-pedido.css' %}" />
     <title>Listado de Pedidos</title>
 </head>
+
 <body>
-    <h1>Listado de Pedidos</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Número</th>
-                <th>Nombre Cliente</th>
-                <th>Correo Cliente</th>
-                <th>Estado</th>
-                <th>Detalles</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for pedido in pedidos %}
-            <tr>
-                <td>{{ pedido.numero }}</td>
-                <td>{{ pedido.nombre_cliente }}</td>
-                <td>{{ pedido.correo_cliente }}</td>
-                <td>{{ pedido.estado }}</td>
-                <td>{{ pedido.detalles }}</td>
-               
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+
+    <div class="contenedor">
+        <div class="izquierda">
+            {% include 'global/nav.html' %}
+            <div class="derecha">
+                {% include 'global/logo-header.html' %}
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Número</th>
+                            <th>Nombre Cliente</th>
+                            <th>Correo Cliente</th>
+                            <th>Estado</th>
+                            <th>Detalles</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pedido in pedidos %}
+                        <tr>
+                            <td>{{ pedido.numero }}</td>
+                            <td>{{ pedido.nombre_cliente }}</td>
+                            <td>{{ pedido.correo_cliente }}</td>
+                            <td>{{ pedido.estado }}</td>
+                            <td>{{ pedido.detalles }}</td>
+                            <td> 
+                                <button class="irCarrito"
+                                    onclick="agregarNuevaOrden(
+                                        {{ pedido.id }},
+                                        {{ pedido.numero }},
+                                        '{{ pedido.nombre_cliente }}',
+                                        '{{ pedido.correo_cliente }}',
+                                        '{{ pedido.estado }}',
+                                        this.dataset.detalles
+                                    )" data-detalles="{{ pedido.detalles|escapejs }}">Agregar al Carrito</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </body>
+<script src="{% static 'js/pedidos.js' %}"></script>
+<script src="{% static 'js/nav.js' %}"></script>
 </html>

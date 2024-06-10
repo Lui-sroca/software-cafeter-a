@@ -20,6 +20,7 @@ def inventario(request):
 def productos(request):
 
     return render(request, 'productos.html')
+
 def carrito(request):
 
     return render(request, 'carrito.html')

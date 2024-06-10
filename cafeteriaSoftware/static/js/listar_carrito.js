@@ -1,74 +1,100 @@
-function mostrarCarrito() {
-  let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  let carritoHtml = "";
-  let precioTotal = [];
-  let inputPrecioTotal = document.getElementById("precio-total");
-
-  carrito.forEach((item, index) => {
-    let preciosubTotal = item.precio * item.cantidad;
-    precioTotal.push(preciosubTotal);
-
-    carritoHtml += `
-            <tr>
-                <td>${item.nombre}</td>
-                <td>
-                    <button class="btn-quantity" onclick="cambiarCantidad(${index}, -1, ${item.cantidadMaxima})" ${
-      item.cantidad <= 1 ? "disabled" : ""
-    }>-</button>
-                    ${item.cantidad}
-                    <button class="btn-quantity" onclick="cambiarCantidad(${index}, 1, ${item.cantidadMaxima})">+</button>
-                </td>
-                <td>$${item.precio.toFixed(2)}</td>
-                <td>$${preciosubTotal.toFixed(2)}</td>
-                <td><button class="btn-delete" onclick="eliminarItem(${index})">Eliminar</button></td>
-            </tr>
-        `;
+window.onload = function () {
+  // Escuchar el evento personalizado cuando se agrega un producto al carrito
+  document.addEventListener("productoAgregado", function () {
+    // Mostrar el carrito actualizado
+    mostrarCarrito();
   });
 
-  const sumaTotal = precioTotal.reduce(
-    (acumulador, valorActual) => acumulador + valorActual,
-    0
-  );
-  inputPrecioTotal.value = sumaTotal;
-  console.log(carrito);
-
-  let carritoElement = document.querySelector("#carrito tbody");
-  if (carritoElement) {
-    carritoElement.innerHTML = carritoHtml;
-  } else {
-    console.error('El elemento con id "carrito" no existe en el DOM.');
-  }
-}
-
-function cambiarCantidad(index, delta, cantidadMaxima) {
-  let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  if (carrito[index]) {
-    if (carrito[index].cantidad < 1) {
-      carrito[index].cantidad = 1; // Evitar cantidades menores a 1
-    }
-    if (carrito[index].cantidad + delta <= cantidadMaxima && carrito[index].cantidad + delta >= 1) {
-      carrito[index].cantidad += delta;
-    } else if (carrito[index].cantidad + delta > cantidadMaxima) {
-      alert("¡Cantidad límite alcanzada!");
-    }
-    localStorage.setItem("carrito", JSON.stringify(carrito));
-    mostrarCarrito(); // Actualizar la visualización del carrito
-  }
-}
-  
-
-function eliminarItem(index) {
-  let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  if (carrito[index]) {
-    carrito.splice(index, 1); // Eliminar el elemento del carrito
-    localStorage.setItem("carrito", JSON.stringify(carrito));
-    mostrarCarrito(); // Actualizar la visualización del carrito
-  }
-}
-
-window.onload = function () {
+  // Mostrar el carrito al cargar la página
   mostrarCarrito();
 };
+
+
+function mostrarCarrito() {
+  // Obtener el número de pedido desde localStorage
+  const numeroOrden = localStorage.getItem("numeroPedido");
+
+  // Validar si es un número válido (opcional)
+  if (numeroOrden && !isNaN(numeroOrden)) {
+    console.log("Número de pedido:", numeroOrden);
+    let carrito =
+      JSON.parse(localStorage.getItem(`pedido_${numeroOrden}`)) || [];
+    let carritoHtml = "";
+    let precioTotal = [];
+    let inputPrecioTotal = document.getElementById("precio-total");
+
+    carrito.forEach((item, index) => {
+      item.detalles.forEach((detalle, detalleIndex) => {
+        console.log("Nombre del producto:", detalle.nombre);
+        let preciosubTotal = detalle.precio * detalle.cantidad;
+        precioTotal.push(preciosubTotal);
+        carritoHtml += `
+            <tr>
+                <td>${detalle.nombre}</td>
+                <td>
+                    <button class="btn-quantity" onclick="cambiarCantidad(${index}, ${detalleIndex}, -1, ${
+          detalle.cantidadMaxima
+        })" ${detalle.cantidad <= 1 ? "disabled" : ""}>-</button>
+                    ${detalle.cantidad}
+                    <button class="btn-quantity" onclick="cambiarCantidad(${index}, ${detalleIndex}, 1, ${
+          detalle.cantidadMaxima
+        })">+</button>
+                </td>
+                <td>$${detalle.precio.toFixed(2)}</td>
+                <td>$${preciosubTotal.toFixed(2)}</td>
+                <td><button class="btn-delete" onclick="eliminarItem(${index}, ${detalleIndex})">Eliminar</button></td>
+            </tr>
+        `;
+      });
+    });
+
+    const sumaTotal = precioTotal.reduce(
+      (acumulador, valorActual) => acumulador + valorActual,
+      0
+    );
+    inputPrecioTotal.value = sumaTotal;
+
+    let carritoElement = document.querySelector("#carrito tbody");
+    if (carritoElement) {
+      carritoElement.innerHTML = carritoHtml;
+    } else {
+      console.error('El elemento con id "carrito" no existe en el DOM.');
+    }
+  } else {
+    console.error("Número de pedido no válido o no encontrado en localStorage");
+  }
+}
+
+function cambiarCantidad(index, detalleIndex, delta, cantidadMaxima) {
+  const numeroOrden = localStorage.getItem("numeroPedido");
+  let carrito = JSON.parse(localStorage.getItem(`pedido_${numeroOrden}`)) || [];
+  if (carrito[index].detalles[detalleIndex]) {
+    let detalle = carrito[index].detalles[detalleIndex];
+    if (detalle.cantidad < 1) {
+      detalle.cantidad = 1; // Evitar cantidades menores a 1
+    }
+    if (
+      detalle.cantidad + delta <= cantidadMaxima &&
+      detalle.cantidad + delta >= 1
+    ) {
+      detalle.cantidad += delta;
+    } else if (detalle.cantidad + delta > cantidadMaxima) {
+      alert("¡Cantidad límite alcanzada!");
+    }
+    localStorage.setItem(`pedido_${numeroOrden}`, JSON.stringify(carrito));
+    mostrarCarrito(); // Actualizar la visualización del carrito
+  }
+}
+
+function eliminarItem(index, detalleIndex) {
+  const numeroOrden = localStorage.getItem("numeroPedido");
+  let carrito = JSON.parse(localStorage.getItem(`pedido_${numeroOrden}`)) || [];
+  if (carrito[index].detalles[detalleIndex]) {
+    carrito[index].detalles.splice(detalleIndex, 1); // Eliminar el detalle del carrito
+    localStorage.setItem(`pedido_${numeroOrden}`, JSON.stringify(carrito));
+    mostrarCarrito(); // Actualizar la visualización del carrito
+  }
+}
 
 let botonPagar = document.getElementById("boton-pagar");
 

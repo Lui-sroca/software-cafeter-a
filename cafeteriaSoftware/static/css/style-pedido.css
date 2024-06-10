@@ -1,9 +1,27 @@
 /* Estilos generales */
-body {
-    font-family: Arial, sans-serif;
+
+
+html, body {
+    height: 100%;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+}
+
+.contenedor {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+}
+
+.izquierda {
+    width: 7%;
+}
+
+.derecha {
+    width: 93%;
+    height: 100%;
+
 }
 
 .container {
@@ -22,7 +40,8 @@ h1 {
 }
 
 table {
-    width: 100%;
+    margin:auto;
+    width: 70%;
     border-collapse: collapse;
 }
 

@@ -1,6 +1,4 @@
 from django.shortcuts import render
-
-# Create your views here.
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
@@ -17,7 +15,7 @@ def obtenerOrden(request):
             pedido = data.get("carrito")
             nombre = data.get("nombre")
             correo = data.get("correo")
-            numero_pedido = int(data.get("numero"))
+            numero_pedido = data.get("numero")
 
             guardar_numero(numero_pedido)
 
@@ -25,7 +23,7 @@ def obtenerOrden(request):
                 numero=numero_pedido,
                 nombre_cliente=nombre,
                 correo_cliente=correo,
-                detalles=pedido,
+                detalles=json.dumps(pedido),
             )
 
             guardar_orden.save()
@@ -56,3 +54,19 @@ def guardar_numero(numero):
 def listar_pedidos(request):
     ordenes = Ordenes.objects.all()
     return render(request, "pedidos.html", {"pedidos": ordenes})
+
+
+def numeroOrdenes(request):
+    if request.method == "POST":
+        # No es necesario cargar el cuerpo de la solicitud para esta operación
+        numero_de_ordenes = numeroOrden.objects.values_list("numero", flat=True)
+
+        # Convertir los números de orden a una lista
+        numeros_lista = list(numero_de_ordenes)
+
+        data = {
+            "numeros": numeros_lista,
+        }
+        return JsonResponse(data)
+    else:
+        return JsonResponse({"error": "Método no permitido"}, status=405)

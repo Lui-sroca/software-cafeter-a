@@ -27,9 +27,9 @@ from ordenes.views import *
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("inicio/", index),
-    path("inventario/", inventario, name='inventario' ),
+    path("inventario/", inventario, name="inventario"),
     path("productos/", lista_productos),
-    path("carrito/", carrito),
+    path("carrito/", carrito, name="carrito"),
     path("finanzas/", finanzas),
     path("admin_interfaz/", admin_interfaz),
     path("empleados/", empleados),
@@ -38,11 +38,9 @@ urlpatterns = [
     path("datosActualizados/", actualizarDatos),
     path("datosEliminados/", eliminarProducto),
     path("guardarVentas/", guardarVentas),
-<<<<<<< HEAD
     path("obtenerOrdenes/", obtenerOrden),
     path("listarPedido/", listar_pedidos),
-=======
-    path("recibirOrden/", ordenRecibida),
->>>>>>> 9f2a2a773688fb5a82b12142bdb20c2f9b383fbb
-    path('', CustomLoginView.as_view(), name='login'),
+    path("recibirOrden/", obtenerOrden),
+    path('obtenerNumerosOrden/', numeroOrdenes),
+    path("", CustomLoginView.as_view(), name="login"),
 ]

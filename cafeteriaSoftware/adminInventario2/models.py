@@ -40,5 +40,5 @@ class Ordenes(models.Model):
     nombre_cliente = models.CharField(max_length=100)
     correo_cliente = models.EmailField()
     estado = models.CharField(default = "En proceso")
-    detalles = models.TextField()
+    detalles = models.TextField(blank=True, null=True)
     fecha_creacion = models.DateField(auto_now_add=True)
