@@ -27,6 +27,15 @@ class Ventas(models.Model):
     descuento = models.IntegerField()
     tipo_descuento = models.CharField(max_length=1000)
     total_precio_venta = models.IntegerField()
+    
+
+class detalleVentas(models.Model):
+    id = models.AutoField(primary_key=True)
+    numero_orden = models.IntegerField()
+    nombre_cliente = models.CharField(max_length=1000)
+    correo_cliente = models.CharField(max_length=1000)
+    pedido = models.TextField(blank=True, null=True)
+    cantidad_productos = models.IntegerField()
 
 
 class numeroOrden(models.Model):

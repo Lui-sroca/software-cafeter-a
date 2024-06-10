@@ -99,96 +99,105 @@ function eliminarItem(index, detalleIndex) {
 let botonPagar = document.getElementById("boton-pagar");
 
 botonPagar.addEventListener("click", function () {
-  let inputPrecioTotal = parseFloat(
-    document.getElementById("precio-total").value
-  );
-  let dineroRecibido = parseFloat(
-    document.getElementById("dinero-recibido").value
-  );
-  let inputVuelto = document.getElementById("vuelto-cliente");
 
-  // Verificar si se ha ingresado una cantidad de dinero recibida
-  if (isNaN(dineroRecibido)) {
-    alert("Por favor, ingrese una cantidad de dinero recibida.");
-    inputVuelto.value = "";
-    return; // Salir de la función si no se ha ingresado dinero
-  }
+  const numeroOrden = localStorage.getItem("numeroPedido");
 
-  // Verificar si el dinero recibido es menor que el precio total
-  if (dineroRecibido < inputPrecioTotal) {
-    alert(
-      "El dinero recibido es menor que el precio total. Por favor, ingrese una cantidad suficiente."
-    );
-    inputVuelto.value = "";
-    return; // Salir de la función si el dinero es insuficiente
-  }
+  let carrito = JSON.parse(localStorage.getItem(`pedido_${numeroOrden}`)) || [];
+  console.log(carrito[0])
+  console.log(carrito[0].nombre_cliente)
+  console.log(carrito[0].correo_cliente)
+  console.log(carrito[0].pedido_numero)
 
-  // Confirmar la venta
-  let confirmarVenta = confirm("¿Está seguro de que desea realizar la venta?");
-  if (confirmarVenta) {
-    const selectElement = document.getElementById("descuentoSelect");
-    const selectedOption = selectElement.options[selectElement.selectedIndex];
+  // let inputPrecioTotal = parseFloat(
+  //   document.getElementById("precio-total").value
+  // );
+  // let dineroRecibido = parseFloat(
+  //   document.getElementById("dinero-recibido").value
+  // );
+  // let inputVuelto = document.getElementById("vuelto-cliente");
 
-    console.log(`Valor seleccionado: ${selectedOption.value}`);
+  // // Verificar si se ha ingresado una cantidad de dinero recibida
+  // if (isNaN(dineroRecibido)) {
+  //   alert("Por favor, ingrese una cantidad de dinero recibida.");
+  //   inputVuelto.value = "";
+  //   return; // Salir de la función si no se ha ingresado dinero
+  // }
 
-    let descuento = 0;
-    let tipoDescuento = "";
+  // // Verificar si el dinero recibido es menor que el precio total
+  // if (dineroRecibido < inputPrecioTotal) {
+  //   alert(
+  //     "El dinero recibido es menor que el precio total. Por favor, ingrese una cantidad suficiente."
+  //   );
+  //   inputVuelto.value = "";
+  //   return; // Salir de la función si el dinero es insuficiente
+  // }
 
-    if (selectedOption.value == "1") {
-      descuento = 0.08; // 8% de descuento
-      tipoDescuento = "estudiante";
-    } else if (selectedOption.value == "2") {
-      descuento = 0.15; // 15% de descuento
-      tipoDescuento = "profesor";
-    }
+  // // Confirmar la venta
+  // let confirmarVenta = confirm("¿Está seguro de que desea realizar la venta?");
+  // if (confirmarVenta) {
+  //   const selectElement = document.getElementById("descuentoSelect");
+  //   const selectedOption = selectElement.options[selectElement.selectedIndex];
 
-    // Calcular el precio con descuento
-    let precioConDescuento = inputPrecioTotal * (1 - descuento);
+  //   console.log(`Valor seleccionado: ${selectedOption.value}`);
 
-    // Calcular el vuelto sin aplicar el descuento
-    let vueltoSinDescuento = dineroRecibido - inputPrecioTotal;
+  //   let descuento = 0;
+  //   let tipoDescuento = "";
 
-    // Calcular el descuento en el vuelto
-    let descuentoEnVuelto = vueltoSinDescuento * descuento;
+  //   if (selectedOption.value == "1") {
+  //     descuento = 0.08; // 8% de descuento
+  //     tipoDescuento = "estudiante";
+  //   } else if (selectedOption.value == "2") {
+  //     descuento = 0.15; // 15% de descuento
+  //     tipoDescuento = "profesor";
+  //   }
 
-    // Calcular el vuelto con el descuento aplicado
-    let vueltoConDescuento = vueltoSinDescuento - descuentoEnVuelto;
+  //   // Calcular el precio con descuento
+  //   let precioConDescuento = inputPrecioTotal * (1 - descuento);
 
-    inputVuelto.value = vueltoConDescuento.toFixed(2);
+  //   // Calcular el vuelto sin aplicar el descuento
+  //   let vueltoSinDescuento = dineroRecibido - inputPrecioTotal;
 
-    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-    const cantidadProductos = carrito.length;
-    const fecha = obtenerFechaActual();
+  //   // Calcular el descuento en el vuelto
+  //   let descuentoEnVuelto = vueltoSinDescuento * descuento;
 
-    const formData = {
-      fecha: fecha,
-      cantidad_productos: cantidadProductos,
-      sub_precio: precioConDescuento,
-      descuento: descuento,
-      tipo_descuento: tipoDescuento,
-      total_precio: vueltoConDescuento,
-    };
+  //   // Calcular el vuelto con el descuento aplicado
+  //   let vueltoConDescuento = vueltoSinDescuento - descuentoEnVuelto;
 
-    fetch("/guardarVentas/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": getCookie("csrftoken"), // Añadir el token CSRF para la seguridad
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("ventaGuardada:", data);
-        alert("Venta realizada con éxito.");
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  } else {
-    inputVuelto.value = "";
-    alert("Venta cancelada.");
-  }
+  //   inputVuelto.value = vueltoConDescuento.toFixed(2);
+
+  //   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  //   const cantidadProductos = carrito.length;
+  //   const fecha = obtenerFechaActual();
+
+  //   const formData = {
+  //     fecha: fecha,
+  //     cantidad_productos: cantidadProductos,
+  //     sub_precio: precioConDescuento,
+  //     descuento: descuento,
+  //     tipo_descuento: tipoDescuento,
+  //     total_precio: vueltoConDescuento,
+  //   };
+
+  //   fetch("/guardarVentas/", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "X-CSRFToken": getCookie("csrftoken"), // Añadir el token CSRF para la seguridad
+  //     },
+  //     body: JSON.stringify(formData),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log("ventaGuardada:", data);
+  //       alert("Venta realizada con éxito.");
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error:", error);
+  //     });
+  // } else {
+  //   inputVuelto.value = "";
+  //   alert("Venta cancelada.");
+  // }
 });
 
 function obtenerFechaActual() {

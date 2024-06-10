@@ -42,6 +42,35 @@ def obtenerOrden(request):
     return JsonResponse({"error": "Método no permitido"}, status=405)
 
 
+def actualizarOrden(request):
+
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+
+            pedido = data.get("carrito")
+            idPedido = data.get("idPedido")
+
+            ordenes = Ordenes.objects.get(id=idPedido)
+
+            ordenes.detalles = pedido
+            
+            ordenes.save()
+
+            return JsonResponse(
+                {
+                    "exito": "se actualizo la orden correctamente al back-end yiuju",
+                    "data": data,
+                }
+            )
+
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Error al procesar el JSON"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+    return JsonResponse({"error": "Método no permitido"}, status=405)
+
+
 def guardar_numero(numero):
 
     numero_pedido = numero

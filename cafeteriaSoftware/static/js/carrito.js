@@ -139,15 +139,51 @@ function agregarAlCarrito(productoId, productoNombre, productoPrecio, productoCa
       cantidadMaxima: productoCantidad,
     });
 
-    console.log("Producto agregado");
-    console.log(carrito);
+
   }
+
+  console.log("Producto agregado");
+  console.log(carrito[0].detalles);
+
+
+  let carritoActual = carrito[0].detalles
+  let idPedido = carrito[0].id
+  actualizarPedido(carritoActual, idPedido)
 
   // Guardar el carrito en localStorage después de agregar o actualizar un producto
   localStorage.setItem(`pedido_${numeroOrden}`, JSON.stringify(carrito));
 
+
+};
+
   // Mostrar el carrito actualizado
+
+
+function actualizarPedido(carrito, id){
+
+  datosActualizar = {
+    carrito : carrito,
+    idPedido : id,
+  }
+
+  fetch("/actualizarOrdenes/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": getCookie("csrftoken"), // Añadir el token CSRF para la seguridad
+    },
+    body: JSON.stringify(datosActualizar),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("carritoActualizado:", data);
+      alert("actualizado con éxito.");
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
+
 
 function getCookie(name) {
   let cookieValue = null;
