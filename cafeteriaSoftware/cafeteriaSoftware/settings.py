@@ -125,3 +125,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Configuración CORS (permitir todas las solicitudes, modificar según sea necesario)
 CORS_ALLOW_ALL_ORIGINS = True
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",  # Agrega el origen de tu aplicación frontend
+    "http://127.0.0.1:8001",
+    "http://127.0.0.1:8000",
+    "http://localhost:3000",  # Si estás utilizando React u otro framework frontend
+]

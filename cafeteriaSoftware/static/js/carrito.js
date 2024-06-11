@@ -10,7 +10,7 @@ async function obtenerNumeroOrdenes() {
     });
 
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      throw new Error("No se pudo obtener el numero");
     }
 
     const data = await response.json();

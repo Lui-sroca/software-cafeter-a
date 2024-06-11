@@ -9,7 +9,7 @@ matplotlib.use('Agg')
 from django.shortcuts import render
 from django.views.generic import TemplateView
 import json
-from .utils import plot
+
 
 @csrf_exempt
 def guardarVentas(request):
