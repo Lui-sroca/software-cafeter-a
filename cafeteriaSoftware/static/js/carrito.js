@@ -45,14 +45,13 @@ function generarNumeroUnico(numerosExistentes) {
 async function nuevaOrden() {
   // Generar un nuevo número de orden único
   const numeroOrden = await obtenerNumeroOrdenes(); // Usar await para esperar la respuesta
-  
 
   // Crear una nueva orden vacía en el localStorage
   const nuevaOrden = {
+    detalles: [],
     numero: numeroOrden,
-    nombre: "", // Asigna los valores correspondientes
+    nombre: "",
     correo: "",
-    carrito: []
   };
 
   localStorage.setItem(`pedido_${numeroOrden}`, JSON.stringify(nuevaOrden));
@@ -68,29 +67,31 @@ async function nuevaOrden() {
       "Content-Type": "application/json",
       "X-CSRFToken": getCookie("csrftoken"), // Añadir el token CSRF para la seguridad
     },
-    body: JSON.stringify(carrito), // Enviar el objeto que contiene la orden
+    body: JSON.stringify(carrito),
   })
-  .then((response) => response.json())
-  .then((data) => {
-    console.log("Orden guardada:", data);
-    alert("Orden realizada con éxito.");
-    alert(
-      "Se puede acercar a caja, su número del pedido es: " + numeroOrden
-    );
-  })
-  .catch((error) => {
-    console.error("Error:", error);
-  });
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Orden guardada:", data);
+      alert("Orden realizada con éxito.");
+      alert("Se puede acercar a caja, su número del pedido es: " + numeroOrden);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 
   console.log(carrito);
   console.log(numeroOrden);
 }
 
-
 // Redirigir a la página del carrito con el nuevo número de orden
 // window.location.href = `/carrito/${numeroOrden}/`;
 
-function agregarAlCarrito(productoId, productoNombre, productoPrecio, productoCantidad) {
+function agregarAlCarrito(
+  productoId,
+  productoNombre,
+  productoPrecio,
+  productoCantidad
+) {
   // Obtener el número del pedido actual
   const numeroOrden = localStorage.getItem("numeroPedido");
 
@@ -116,6 +117,9 @@ function agregarAlCarrito(productoId, productoNombre, productoPrecio, productoCa
   // Obtener los detalles del pedido
   let detalles = carrito[0].detalles;
 
+  console.log(carrito
+  )
+
   // Verificar si el producto ya está en los detalles del pedido
   let productoExistente = detalles.find((item) => item.id === productoId);
 
@@ -138,33 +142,26 @@ function agregarAlCarrito(productoId, productoNombre, productoPrecio, productoCa
       cantidad: 1,
       cantidadMaxima: productoCantidad,
     });
-
-
   }
 
   console.log("Producto agregado");
   console.log(carrito[0].detalles);
 
-
-  let carritoActual = carrito[0].detalles
-  let idPedido = carrito[0].id
-  actualizarPedido(carritoActual, idPedido)
+  let carritoActual = carrito[0].detalles;
+  let idPedido = carrito[0].id;
+  actualizarPedido(carritoActual, idPedido);
 
   // Guardar el carrito en localStorage después de agregar o actualizar un producto
   localStorage.setItem(`pedido_${numeroOrden}`, JSON.stringify(carrito));
+}
 
+// Mostrar el carrito actualizado
 
-};
-
-  // Mostrar el carrito actualizado
-
-
-function actualizarPedido(carrito, id){
-
+function actualizarPedido(carrito, id) {
   datosActualizar = {
-    carrito : carrito,
-    idPedido : id,
-  }
+    carrito: carrito,
+    idPedido: id,
+  };
 
   fetch("/actualizarOrdenes/", {
     method: "POST",
@@ -183,7 +180,6 @@ function actualizarPedido(carrito, id){
       console.error("Error:", error);
     });
 }
-
 
 function getCookie(name) {
   let cookieValue = null;

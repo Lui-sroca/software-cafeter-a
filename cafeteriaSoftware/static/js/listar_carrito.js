@@ -1,7 +1,6 @@
 window.onload = function () {
   // Escuchar el evento personalizado cuando se agrega un producto al carrito
   document.addEventListener("productoAgregado", function () {
-    // Mostrar el carrito actualizado
     mostrarCarrito();
   });
 
@@ -9,16 +8,20 @@ window.onload = function () {
   mostrarCarrito();
 };
 
-
 function mostrarCarrito() {
+  // Limpiar los campos de entrada
+  const inputDineroRecibido = document.getElementById("dinero-recibido");
+  const inputVuelto = document.getElementById("vuelto-cliente");
+  inputDineroRecibido.value = ""; // Limpiar el campo de dinero recibido
+  inputVuelto.value = ""; // Limpiar el campo de vuelto
+
   // Obtener el número de pedido desde localStorage
   const numeroOrden = localStorage.getItem("numeroPedido");
 
   // Validar si es un número válido (opcional)
   if (numeroOrden && !isNaN(numeroOrden)) {
     console.log("Número de pedido:", numeroOrden);
-    let carrito =
-      JSON.parse(localStorage.getItem(`pedido_${numeroOrden}`)) || [];
+    let carrito = JSON.parse(localStorage.getItem(`pedido_${numeroOrden}`)) || [];
     let carritoHtml = "";
     let precioTotal = [];
     let inputPrecioTotal = document.getElementById("precio-total");
@@ -32,13 +35,9 @@ function mostrarCarrito() {
             <tr>
                 <td>${detalle.nombre}</td>
                 <td>
-                    <button class="btn-quantity" onclick="cambiarCantidad(${index}, ${detalleIndex}, -1, ${
-          detalle.cantidadMaxima
-        })" ${detalle.cantidad <= 1 ? "disabled" : ""}>-</button>
+                    <button class="btn-quantity" onclick="cambiarCantidad(${index}, ${detalleIndex}, -1, ${detalle.cantidadMaxima})" ${detalle.cantidad <= 1 ? "disabled" : ""}>-</button>
                     ${detalle.cantidad}
-                    <button class="btn-quantity" onclick="cambiarCantidad(${index}, ${detalleIndex}, 1, ${
-          detalle.cantidadMaxima
-        })">+</button>
+                    <button class="btn-quantity" onclick="cambiarCantidad(${index}, ${detalleIndex}, 1, ${detalle.cantidadMaxima})">+</button>
                 </td>
                 <td>$${detalle.precio.toFixed(2)}</td>
                 <td>$${preciosubTotal.toFixed(2)}</td>
@@ -48,10 +47,7 @@ function mostrarCarrito() {
       });
     });
 
-    const sumaTotal = precioTotal.reduce(
-      (acumulador, valorActual) => acumulador + valorActual,
-      0
-    );
+    const sumaTotal = precioTotal.reduce((acumulador, valorActual) => acumulador + valorActual, 0);
     inputPrecioTotal.value = sumaTotal;
 
     let carritoElement = document.querySelector("#carrito tbody");
@@ -73,10 +69,7 @@ function cambiarCantidad(index, detalleIndex, delta, cantidadMaxima) {
     if (detalle.cantidad < 1) {
       detalle.cantidad = 1; // Evitar cantidades menores a 1
     }
-    if (
-      detalle.cantidad + delta <= cantidadMaxima &&
-      detalle.cantidad + delta >= 1
-    ) {
+    if (detalle.cantidad + delta <= cantidadMaxima && detalle.cantidad + delta >= 1) {
       detalle.cantidad += delta;
     } else if (detalle.cantidad + delta > cantidadMaxima) {
       alert("¡Cantidad límite alcanzada!");
@@ -99,106 +92,167 @@ function eliminarItem(index, detalleIndex) {
 let botonPagar = document.getElementById("boton-pagar");
 
 botonPagar.addEventListener("click", function () {
+  let inputPrecioTotal = parseFloat(document.getElementById("precio-total").value);
+  let dineroRecibido = parseFloat(document.getElementById("dinero-recibido").value);
+  let inputVuelto = document.getElementById("vuelto-cliente");
 
-  const numeroOrden = localStorage.getItem("numeroPedido");
+  // Verificar si se ha ingresado una cantidad de dinero recibida
+  if (isNaN(dineroRecibido)) {
+    alert("Por favor, ingrese una cantidad de dinero recibida.");
+    inputVuelto.value = "";
+    return; // Salir de la función si no se ha ingresado dinero
+  }
 
-  let carrito = JSON.parse(localStorage.getItem(`pedido_${numeroOrden}`)) || [];
-  console.log(carrito[0])
-  console.log(carrito[0].nombre_cliente)
-  console.log(carrito[0].correo_cliente)
-  console.log(carrito[0].pedido_numero)
+  // Verificar si el dinero recibido es menor que el precio total
+  if (dineroRecibido < inputPrecioTotal) {
+    alert("El dinero recibido es menor que el precio total. Por favor, ingrese una cantidad suficiente.");
+    inputVuelto.value = "";
+    return; // Salir de la función si el dinero es insuficiente
+  }
 
-  // let inputPrecioTotal = parseFloat(
-  //   document.getElementById("precio-total").value
-  // );
-  // let dineroRecibido = parseFloat(
-  //   document.getElementById("dinero-recibido").value
-  // );
-  // let inputVuelto = document.getElementById("vuelto-cliente");
+  // Confirmar la venta
+  let confirmarVenta = confirm("¿Está seguro de que desea realizar la venta?");
+  if (confirmarVenta) {
+    const selectElement = document.getElementById("descuentoSelect");
+    const selectedOption = selectElement.options[selectElement.selectedIndex];
 
-  // // Verificar si se ha ingresado una cantidad de dinero recibida
-  // if (isNaN(dineroRecibido)) {
-  //   alert("Por favor, ingrese una cantidad de dinero recibida.");
-  //   inputVuelto.value = "";
-  //   return; // Salir de la función si no se ha ingresado dinero
-  // }
+    console.log(`Valor seleccionado: ${selectedOption.value}`);
 
-  // // Verificar si el dinero recibido es menor que el precio total
-  // if (dineroRecibido < inputPrecioTotal) {
-  //   alert(
-  //     "El dinero recibido es menor que el precio total. Por favor, ingrese una cantidad suficiente."
-  //   );
-  //   inputVuelto.value = "";
-  //   return; // Salir de la función si el dinero es insuficiente
-  // }
+    let descuento = 0;
+    let tipoDescuento = "";
 
-  // // Confirmar la venta
-  // let confirmarVenta = confirm("¿Está seguro de que desea realizar la venta?");
-  // if (confirmarVenta) {
-  //   const selectElement = document.getElementById("descuentoSelect");
-  //   const selectedOption = selectElement.options[selectElement.selectedIndex];
+    if (selectedOption.value == "1") {
+      descuento = 0.08; // 8% de descuento
+      tipoDescuento = "estudiante";
+    } else if (selectedOption.value == "2") {
+      descuento = 0.15; // 15% de descuento
+      tipoDescuento = "profesor";
+    }
 
-  //   console.log(`Valor seleccionado: ${selectedOption.value}`);
+    // Calcular el precio con descuento
+    let precioConDescuento = inputPrecioTotal * (1 - descuento);
 
-  //   let descuento = 0;
-  //   let tipoDescuento = "";
+    // Calcular el vuelto sin aplicar el descuento
+    let vueltoSinDescuento = dineroRecibido - inputPrecioTotal;
 
-  //   if (selectedOption.value == "1") {
-  //     descuento = 0.08; // 8% de descuento
-  //     tipoDescuento = "estudiante";
-  //   } else if (selectedOption.value == "2") {
-  //     descuento = 0.15; // 15% de descuento
-  //     tipoDescuento = "profesor";
-  //   }
+    // Calcular el descuento en el vuelto
+    let descuentoEnVuelto = vueltoSinDescuento * descuento;
 
-  //   // Calcular el precio con descuento
-  //   let precioConDescuento = inputPrecioTotal * (1 - descuento);
+    // Calcular el vuelto con el descuento aplicado
+    let vueltoConDescuento = vueltoSinDescuento - descuentoEnVuelto;
 
-  //   // Calcular el vuelto sin aplicar el descuento
-  //   let vueltoSinDescuento = dineroRecibido - inputPrecioTotal;
+    inputVuelto.value = vueltoConDescuento.toFixed(2);
 
-  //   // Calcular el descuento en el vuelto
-  //   let descuentoEnVuelto = vueltoSinDescuento * descuento;
+    const numeroOrden = localStorage.getItem("numeroPedido");
+    const carrito = JSON.parse(localStorage.getItem(`pedido_${numeroOrden}`)) || [];
+    const cantidadProductos = carrito.length;
+    const fecha = obtenerFechaActual();
 
-  //   // Calcular el vuelto con el descuento aplicado
-  //   let vueltoConDescuento = vueltoSinDescuento - descuentoEnVuelto;
+    const formData = {
+      fecha: fecha,
+      cantidad_productos: cantidadProductos,
+      sub_precio: precioConDescuento,
+      descuento: descuento,
+      tipo_descuento: tipoDescuento,
+      total_precio: vueltoConDescuento,
+      numero_orden: numeroOrden,
+    };
 
-  //   inputVuelto.value = vueltoConDescuento.toFixed(2);
+    fetch("/guardarVentas/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCookie("csrftoken"), // Añadir el token CSRF para la seguridad
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("ventaGuardada:", data);
+        alert("Venta realizada con éxito.");
+        // Guardar detalles de venta y eliminar pedido después de confirmar la venta
+        guardarDetallesV();
+        eliminarPedidoCarrito();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
 
-  //   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  //   const cantidadProductos = carrito.length;
-  //   const fecha = obtenerFechaActual();
+      datosCambio = {
+        numero_orden : numeroOrden,
+      }
 
-  //   const formData = {
-  //     fecha: fecha,
-  //     cantidad_productos: cantidadProductos,
-  //     sub_precio: precioConDescuento,
-  //     descuento: descuento,
-  //     tipo_descuento: tipoDescuento,
-  //     total_precio: vueltoConDescuento,
-  //   };
+      fetch("/cambiarEstadoP/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCookie("csrftoken"), // Añadir el token CSRF para la seguridad
+        },
+        body: JSON.stringify(datosCambio),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("ventaGuardada:", data);
+          alert("Venta realizada con éxito.");
+          // Guardar detalles de venta y eliminar pedido después de confirmar la venta
+          guardarDetallesV();
+          eliminarPedidoCarrito();
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+  } else {
+    inputVuelto.value = "";
+    alert("Venta cancelada.");
+  }
 
-  //   fetch("/guardarVentas/", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       "X-CSRFToken": getCookie("csrftoken"), // Añadir el token CSRF para la seguridad
-  //     },
-  //     body: JSON.stringify(formData),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log("ventaGuardada:", data);
-  //       alert("Venta realizada con éxito.");
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error:", error);
-  //     });
-  // } else {
-  //   inputVuelto.value = "";
-  //   alert("Venta cancelada.");
-  // }
+  
 });
+
+async function guardarDetallesV() {
+  const numeroOrden = localStorage.getItem("numeroPedido");
+  let carrito = JSON.parse(localStorage.getItem(`pedido_${numeroOrden}`)) || [];
+
+  let nombreCliente = carrito[0].nombre_cliente;
+  let correoCliente = carrito[0].correo_cliente;
+  let pedidoNumero = carrito[0].pedido_numero;
+
+  const formData = {
+    nombreCliente: nombreCliente,
+    correoCliente: correoCliente,
+    pedidoNumero: pedidoNumero,
+  };
+
+  fetch("/guardarDetallesV/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": getCookie("csrftoken"), // Añadir el token CSRF para la seguridad
+    },
+    body: JSON.stringify(formData),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("ventaGuardada:", data);
+      alert("Detalles de la venta guardados con éxito.");
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
+function eliminarPedidoCarrito() {
+  const numeroOrden = localStorage.getItem("numeroPedido");
+  localStorage.removeItem(`pedido_${numeroOrden}`);
+
+  if (localStorage.getItem(`pedido_${numeroOrden}`) === null) {
+    console.log('El carrito ha sido eliminado correctamente.');
+    localStorage.setItem("numeroPedido", "");
+    location.reload(); // Recargar la página después de eliminar el carrito
+  } else {
+    console.log('El carrito aún existe.');
+  }
+}
 
 function obtenerFechaActual() {
   const fechaActual = new Date();

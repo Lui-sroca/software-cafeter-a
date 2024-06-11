@@ -12,7 +12,7 @@ def obtenerOrden(request):
         try:
             data = json.loads(request.body)
 
-            pedido = data.get("carrito")
+            pedido = data.get("detalles")
             nombre = data.get("nombre")
             correo = data.get("correo")
             numero_pedido = data.get("numero")
@@ -54,12 +54,40 @@ def actualizarOrden(request):
             ordenes = Ordenes.objects.get(id=idPedido)
 
             ordenes.detalles = pedido
-            
+
             ordenes.save()
 
             return JsonResponse(
                 {
                     "exito": "se actualizo la orden correctamente al back-end yiuju",
+                    "data": data,
+                }
+            )
+
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Error al procesar el JSON"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+    return JsonResponse({"error": "Método no permitido"}, status=405)
+
+
+def cambiarEstadoP(request):
+
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+
+            numero_orden = data.get("numero_orden")
+
+            ordenes = Ordenes.objects.get(numero=numero_orden)
+
+            ordenes.estado = "Finalizado"
+
+            ordenes.save()
+
+            return JsonResponse(
+                {
+                    "exito": "se actualizo el estado de la orden correctamente al back-end yiuju",
                     "data": data,
                 }
             )
@@ -81,8 +109,10 @@ def guardar_numero(numero):
 
 
 def listar_pedidos(request):
-    ordenes = Ordenes.objects.all()
-    return render(request, "pedidos.html", {"pedidos": ordenes})
+    # Filtrar las órdenes en el estado "En proceso"
+    ordenes_en_proceso = Ordenes.objects.filter(estado="En proceso")
+    
+    return render(request, "pedidos.html", {"pedidos": ordenes_en_proceso})
 
 
 def numeroOrdenes(request):

@@ -1,7 +1,6 @@
 from django.db import models
 
 
-# Create your models here.
 class Categoria(models.Model):
     id = models.AutoField(primary_key=True)
     categoria_producto = models.CharField(max_length=1000)
@@ -27,16 +26,15 @@ class Ventas(models.Model):
     descuento = models.IntegerField()
     tipo_descuento = models.CharField(max_length=1000)
     total_precio_venta = models.IntegerField()
-    
+    numero_orden = models.IntegerField()  # Clave única
 
 class detalleVentas(models.Model):
     id = models.AutoField(primary_key=True)
-    numero_orden = models.IntegerField()
+    numero_orden = models.IntegerField()  # Número de orden compartido
     nombre_cliente = models.CharField(max_length=1000)
     correo_cliente = models.CharField(max_length=1000)
     pedido = models.TextField(blank=True, null=True)
     cantidad_productos = models.IntegerField()
-
 
 class numeroOrden(models.Model):
     id = models.AutoField(primary_key=True)
@@ -48,6 +46,6 @@ class Ordenes(models.Model):
     numero = models.IntegerField()
     nombre_cliente = models.CharField(max_length=100)
     correo_cliente = models.EmailField()
-    estado = models.CharField(default = "En proceso")
+    estado = models.CharField(default="En proceso")
     detalles = models.TextField(blank=True, null=True)
     fecha_creacion = models.DateField(auto_now_add=True)
