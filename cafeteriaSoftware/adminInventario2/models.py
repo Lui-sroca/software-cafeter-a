@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group, Permission
+
 
 
 class Categoria(models.Model):
@@ -49,3 +52,24 @@ class Ordenes(models.Model):
     estado = models.CharField(default="En proceso")
     detalles = models.TextField(blank=True, null=True)
     fecha_creacion = models.DateField(auto_now_add=True)
+
+
+class CustomUser(AbstractUser):
+    is_employee = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False)
+
+    groups = models.ManyToManyField(
+        Group,
+        related_name='customuser_set',  # Añade un nombre de relación inversa único
+        blank=True,
+        help_text=('The groups this user belongs to. A user will get all permissions '
+                   'granted to each of their groups.'),
+        related_query_name='customuser',
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name='customuser_set',  # Añade un nombre de relación inversa único
+        blank=True,
+        help_text=('Specific permissions for this user.'),
+        related_query_name='customuser',
+    )

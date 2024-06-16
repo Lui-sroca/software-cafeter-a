@@ -46,4 +46,6 @@ urlpatterns = [
     path("recibirOrden/", obtenerOrden),
     path('obtenerNumerosOrden/', numeroOrdenes),
     path("", CustomLoginView.as_view(), name="login"),
+    # path('registro/', signup, name='signup'),
+    # path('listar_empleados/', UserListView.as_view(), name='user_list'),
 ]
