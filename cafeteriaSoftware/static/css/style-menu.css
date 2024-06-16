@@ -1,0 +1,253 @@
+/* Estilos generales para body y html */
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Contenedor principal */
+.contenedor {
+  display: flex;
+  height: 101%;
+}
+
+/* Barra lateral izquierda */
+.izquierda {
+  width: 5%;
+  background-color: #fdfffe;
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Contenido principal derecho */
+.derecha {
+  width: 93%;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Estilos para ofertas especiales */
+.ofertas-especiales {
+  background-color: #e4f7e7; /* Color de fondo verde claro */
+  color: #006241;
+  padding: 10px 20px;
+  text-align: center;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+/* Estilos para encabezado de producto */
+.head-producto {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.titulo-producto h1 {
+  font-family: "Anton", sans-serif;
+  font-size: 40px;
+  font-weight: 400;
+  margin: 0;
+  color: #006241;
+}
+
+/* Estilos para buscador de productos */
+.buscador-producto {
+  display: flex;
+  align-items: center;
+}
+
+.buscador-producto input {
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-bottom: 2px solid #006241;
+  margin-right: 10px;
+  flex: 1;
+  transition: border-bottom-color 0.3s ease;
+}
+
+.buscador-producto input:focus {
+  outline: none;
+  border-bottom-color: #333;
+}
+
+.buscador-producto button {
+  background-color: #006241;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.buscador-producto button:hover {
+  background-color: #004d33;
+}
+
+/* Cuadrícula de productos */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Reducir el ancho mínimo */
+  gap: 20px; /* Reducir el espacio entre elementos */
+}
+
+.grid-item {
+  background: #ffffff;
+  border-radius: 10px; /* Reducir el radio de los bordes */
+  padding: 15px; /* Reducir el padding */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.grid-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Aumentar la intensidad de la sombra */
+}
+
+.imagen-productos {
+  height: 150px; /* Reducir la altura */
+  width: 150px; /* Reducir el ancho */
+  background: #e4f7e7; /* Color de fondo verde claro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  margin: auto;
+  margin-bottom: 10px; /* Reducir el margen inferior */
+  overflow: hidden;
+}
+
+.imagen-productos img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.nombre-producto p {
+  font-family: "Lilita One", sans-serif;
+  font-size: 20px; /* Reducir el tamaño de la fuente */
+  font-weight: 400;
+  margin: 8px 0; /* Ajustar el margen */
+  color: #006241;
+}
+
+.descripcion-producto p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #666;
+}
+
+.boton-añadir button {
+  background-color: #6ae56a;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px; /* Reducir el padding */
+  font-size: 14px; /* Reducir el tamaño de la fuente */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.boton-añadir button:hover {
+  background-color: #6ae56a;
+}
+
+/* Estilos para el filtro de búsqueda */
+.filtro-busqueda {
+  margin-bottom: 20px;
+}
+
+.filtro-busqueda .input-busqueda {
+  display: flex;
+  align-items: center;
+  max-width: 300px; /* Reducir el ancho máximo */
+}
+
+.filtro-busqueda input {
+  padding: 8px; /* Reducir el padding */
+  font-size: 14px; /* Reducir el tamaño de la fuente */
+  border: none;
+  border-bottom: 2px solid #006241;
+  margin-right: 10px;
+  flex: 1;
+  transition: border-bottom-color 0.3s ease;
+}
+
+.filtro-busqueda input:focus {
+  outline: none;
+  border-bottom-color: #333;
+}
+
+.filtro-busqueda button {
+  background-color: #006241;
+  color: white;
+  border: none;
+  padding: 8px 16px; /* Reducir el padding */
+  font-size: 14px; /* Reducir el tamaño de la fuente */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.filtro-busqueda button:hover {
+  background-color: #004d33;
+}
+
+/* Media queries para diseño responsivo */
+@media (max-width: 768px) {
+  .contenedor {
+    flex-direction: column;
+  }
+
+  .izquierda {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .derecha {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); /* Ajustar para pantallas más pequeñas */
+    gap: 15px;
+  }
+
+  .imagen-productos {
+    height: 120px; /* Ajustar altura para dispositivos móviles */
+    width: 120px; /* Ajustar ancho para dispositivos móviles */
+  }
+
+  .nombre-producto p {
+    font-size: 16px; /* Ajustar tamaño de fuente para dispositivos móviles */
+  }
+
+  .boton-añadir button {
+    padding: 8px 12px; /* Ajustar padding para dispositivos móviles */
+    font-size: 12px; /* Ajustar tamaño de fuente para dispositivos móviles */
+  }
+
+  .filtro-busqueda .input-busqueda {
+    max-width: 100%; /* Ancho máximo completo en dispositivos móviles */
+  }
+
+  .filtro-busqueda input {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .filtro-busqueda button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}

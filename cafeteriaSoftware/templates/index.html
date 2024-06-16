@@ -5,18 +5,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Anton&family=Jaro:opsz@6..72&family=Lilita+One&family=Oswald:wght@200..700&family=Poetsen+One&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/style-nav-inventario.css' %}" />
-  <link rel="stylesheet" href="{% static 'css/output.css' %}" />
-  <link rel="stylesheet" href="{% static 'css/style-inventario.css' %}" />
-  <link rel="stylesheet" href="{% static 'css/ventana-emergente-inventario.css' %}" />
-  <title>Inventario SoftCoffe</title>
+  <link rel="stylesheet" href="{% static 'css/style-menu.css' %}" />
+  <title></title>
 </head>
 
 <body>
@@ -25,9 +15,77 @@
       {% include 'global/nav.html' %}
       <div class="derecha">
         {% include 'global/logo-header.html' %}
+
+        <!-- Sección de Ofertas Especiales -->
+        <div class="ofertas-especiales">
+          <p><strong>¡Ofertas Especiales!</strong> Descubre nuestros descuentos esta semana.</p>
+        </div>
+
+        <div class="head-producto">
+          <div class="titulo-producto">
+            <h1></h1>
+          </div>
+          <div class="buscador-producto">
+            <input type="text" placeholder="Buscar producto...">
+            <button>Buscar</button>
+          </div>
+        </div>
+
+        <div class="grid-container">
+          <div class="grid-item">
+            <div class="imagen-productos">
+              <img src="{% static 'img/cafe-americano.jpg' %}" alt="Café Americano">
+            </div>
+            <div class="nombre-producto">
+              <p>Café Americano</p>
+            </div>
+            <div class="descripcion-producto">
+              <p>Espresso simple con agua caliente.</p>
+            </div>
+            <div class="boton-añadir">
+              <button>Añadir al carrito</button>
+            </div>
+          </div>
+
+          <div class="grid-item">
+            <div class="imagen-productos">
+              <img src="{% static 'img/capuchino.jpg' %}" alt="Capuchino">
+            </div>
+            <div class="nombre-producto">
+              <p>Capuchino</p>
+            </div>
+            <div class="descripcion-producto">
+              <p>Espresso con leche espumada y un toque de canela.</p>
+            </div>
+            <div class="boton-añadir">
+              <button>Añadir al carrito</button>
+            </div>
+          </div>
+
+          <div class="grid-item">
+            <div class="imagen-productos">
+              <img src="{% static 'img/latte.jpg' %}" alt="Latte">
+            </div>
+            <div class="nombre-producto">
+              <p>Latte</p>
+            </div>
+            <div class="descripcion-producto">
+              <p>Espresso con leche vaporizada y una fina capa de espuma.</p>
+            </div>
+            <div class="boton-añadir">
+              <button>Añadir al carrito</button>
+            </div>
+          </div>
+
+          <!-- Añadir más elementos del menú aquí -->
+
+        </div>
+
       </div>
     </div>
+  </div>
 </body>
+
 <script src="{% static 'js/nav.js' %}"></script>
 <script src="{% static 'js/agregar_producto.js' %}"></script>
 <script src="{% static 'js/actualizar_producto.js' %}"></script>

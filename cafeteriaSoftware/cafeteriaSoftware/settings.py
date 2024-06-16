@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'cafeteriaSoftware.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "bdSoftCoffe",
+        "NAME": "adminSoftCoffe",
         "USER": "postgres",
         "PASSWORD": "123456",
         "HOST": "localhost",

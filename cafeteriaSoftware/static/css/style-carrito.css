@@ -1,67 +1,65 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    background-color: #f9f9f9;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    box-shadow: 0 2px 3px rgba(0,0,0,0.1);
-    background-color: #fff;
-}
-
-table thead {
-    background-color: #007BFF;
-    color: #ffffff;
-}
-
-table th, table td {
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    text-align: center;
-}
-
-table th {
-    background-color: #007BFF;
-    color: white;
-    text-transform: uppercase;
-    font-size: 14px;
-}
-
-table tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-table tr:hover {
-    background-color: #f1f1f1;
-}
-
+/* Contenedor de la tabla */
 .table-container {
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
 }
 
-.btn-quantity {
-    padding: 5px 10px;
-    margin: 0 5px;
-    cursor: pointer;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 3px;
+/* Estilos para la tabla */
+#carrito {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff; /* Color de fondo de la tabla */
 }
 
-.btn-quantity:hover {
-    background-color: #0056b3;
+#carrito thead {
+  background-color: #57d43e; /* Color de fondo del encabezado */
+  color: #ffffff; /* Color de texto del encabezado */
 }
 
-.btn-quantity:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+#carrito th, #carrito td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+#carrito th {
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+#carrito tbody tr:nth-child(even) {
+  background-color: #f2f2f2; /* Color de fondo de filas pares */
+}
+
+#carrito tbody tr:hover {
+  background-color: #f1f1f1; /* Color de fondo al pasar el mouse */
+}
+
+/* Estilos para los botones */
+#boton-pagar {
+  padding: 8px 16px;
+  margin: 10px 0;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #47d634; /* Color azul */
+  color: #fff;
+}
+
+#boton-pagar:hover {
+  background-color: #24be24; /* Color azul más oscuro al hacer hover */
+}
+
+#boton-pagar:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
 }
