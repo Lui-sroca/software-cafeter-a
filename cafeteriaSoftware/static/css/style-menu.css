@@ -1,0 +1,154 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+}
+
+.contenedor {
+  display: flex;
+  height: 100%;
+}
+
+.izquierda {
+  width: 7%;
+  background-color: RGB(0, 98, 65);
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.derecha {
+  width: 93%;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.ofertas-especiales {
+  background-color: #ffe34d;
+  color: RGB(0, 98, 65);
+  padding: 10px 20px;
+  text-align: center;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.head-producto {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.titulo-producto h1 {
+  font-family: "Anton", sans-serif;
+  font-size: 40px;
+  font-weight: 400;
+  margin: 0;
+  color: RGB(0, 98, 65);
+}
+
+.buscador-producto {
+  display: flex;
+  align-items: center;
+}
+
+.buscador-producto input {
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-bottom: 2px solid RGB(0, 98, 65);
+  margin-right: 10px;
+  transition: border-bottom-color 0.3s ease;
+}
+
+.buscador-producto input:focus {
+  outline: none;
+  border-bottom-color: #333;
+}
+
+.buscador-producto button {
+  background-color: RGB(0, 98, 65);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.buscador-producto button:hover {
+  background-color: #004d33;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.grid-item {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.grid-item:hover {
+  transform: translateY(-5px);
+}
+
+.imagen-productos {
+  height: 200px;
+  width: 200px;
+  background: RGB(0, 98, 65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  margin: auto;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.imagen-productos img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.nombre-producto p {
+  font-family: "Lilita One", sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  margin: 10px 0;
+  color: RGB(0, 98, 65);
+}
+
+.descripcion-producto p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #666;
+}
+
+.boton-añadir button {
+  background-color: RGB(0, 98, 65);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.boton-añadir button:hover {
+  background-color: #004d33;
+}
+
+/* Estilos de navegación y logo en 'global/nav.html' y 'global/logo-header.html' deben definirse adecuadamente */
