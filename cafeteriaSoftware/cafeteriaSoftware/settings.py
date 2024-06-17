@@ -62,7 +62,9 @@ TEMPLATES = [
     },
 ]
 
-LOGIN_URL = 'registration/login'
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'login'
+LOGOUT_REDIRECT_URL = 'login'
 
 WSGI_APPLICATION = 'cafeteriaSoftware.wsgi.application'
 
