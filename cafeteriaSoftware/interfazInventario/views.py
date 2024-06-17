@@ -3,6 +3,9 @@ from django.shortcuts import render
 from adminInventario2.models import *
 from django.contrib.auth.decorators import login_required
 
+
+@login_required
+
 def index(request):
     productos = Productos.objects.all()
     categoria = Categoria.objects.all()

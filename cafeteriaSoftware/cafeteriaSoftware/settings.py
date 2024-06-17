@@ -62,9 +62,7 @@ TEMPLATES = [
     },
 ]
 
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'inventario'
-LOGOUT_REDIRECT_URL = 'login'
+LOGIN_URL = 'registration/login'
 
 WSGI_APPLICATION = 'cafeteriaSoftware.wsgi.application'
 
@@ -76,7 +74,7 @@ WSGI_APPLICATION = 'cafeteriaSoftware.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "adminSoftCoffe",
+        "NAME": "bdSoftCoffe",
         "USER": "postgres",
         "PASSWORD": "123456",
         "HOST": "localhost",

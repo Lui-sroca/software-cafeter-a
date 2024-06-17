@@ -158,7 +158,7 @@ botonPagar.addEventListener("click", function () {
       numero_orden: numeroOrden,
     };
 
-    fetch("/guardarVentas/", {
+    fetch("/finanzas/guardarVentas", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -182,7 +182,7 @@ botonPagar.addEventListener("click", function () {
         numero_orden : numeroOrden,
       }
 
-      fetch("/cambiarEstadoP/", {
+      fetch("/ordenes/cambiarEstadoP/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -223,7 +223,7 @@ async function guardarDetallesV() {
     pedidoNumero: pedidoNumero,
   };
 
-  fetch("/guardarDetallesV/", {
+  fetch("/finanzas/guardarDetallesV/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -1,6 +1,6 @@
 async function obtenerNumeroOrdenes() {
   try {
-    const response = await fetch("/obtenerNumerosOrden/", {
+    const response = await fetch("/ordenes/obtenerNumerosOrden/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -61,7 +61,7 @@ async function nuevaOrden() {
 
   console.log("Datos que se enviarán al servidor:", carrito);
 
-  fetch("/obtenerOrdenes/", {
+  fetch("/ordenes/obtenerOrdenes/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -163,7 +163,7 @@ function actualizarPedido(carrito, id) {
     idPedido: id,
   };
 
-  fetch("/actualizarOrdenes/", {
+  fetch("/ordenes/actualizarOrdenes/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

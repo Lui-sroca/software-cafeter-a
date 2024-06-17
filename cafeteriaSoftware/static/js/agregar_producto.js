@@ -45,7 +45,7 @@ submitBtn.addEventListener("click", function () {
     categoria: categoria,
   };
 
-  fetch("/datosGuardados/", {
+  fetch("/inventario/datosGuardados/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
