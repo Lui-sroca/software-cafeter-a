@@ -1,0 +1,19 @@
+{% load static %}
+{% if messages %}
+{% for message in messages  %}
+  <div class="notification {{message.tags}}">
+    {{ message }}
+  </div>
+{% endfor %}
+{% endif %}
+
+<head>
+  <link rel="stylesheet" href="{% static 'css/style-registro.css' %}" />
+</head>
+
+{% block content %}
+<div class="container">
+   <h1>has ingresado</h1>
+</div>
+{% endblock %}
+

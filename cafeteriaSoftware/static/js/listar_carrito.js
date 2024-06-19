@@ -21,7 +21,8 @@ function mostrarCarrito() {
   // Validar si es un número válido (opcional)
   if (numeroOrden && !isNaN(numeroOrden)) {
     console.log("Número de pedido:", numeroOrden);
-    let carrito = JSON.parse(localStorage.getItem(`pedido_${numeroOrden}`)) || [];
+    let carrito =
+      JSON.parse(localStorage.getItem(`pedido_${numeroOrden}`)) || [];
     let carritoHtml = "";
     let precioTotal = [];
     let inputPrecioTotal = document.getElementById("precio-total");
@@ -35,9 +36,13 @@ function mostrarCarrito() {
             <tr>
                 <td>${detalle.nombre}</td>
                 <td>
-                    <button class="btn-quantity" onclick="cambiarCantidad(${index}, ${detalleIndex}, -1, ${detalle.cantidadMaxima})" ${detalle.cantidad <= 1 ? "disabled" : ""}>-</button>
+                    <button class="btn-quantity" onclick="cambiarCantidad(${index}, ${detalleIndex}, -1, ${
+          detalle.cantidadMaxima
+        })" ${detalle.cantidad <= 1 ? "disabled" : ""}>-</button>
                     ${detalle.cantidad}
-                    <button class="btn-quantity" onclick="cambiarCantidad(${index}, ${detalleIndex}, 1, ${detalle.cantidadMaxima})">+</button>
+                    <button class="btn-quantity" onclick="cambiarCantidad(${index}, ${detalleIndex}, 1, ${
+          detalle.cantidadMaxima
+        })">+</button>
                 </td>
                 <td>$${detalle.precio.toFixed(2)}</td>
                 <td>$${preciosubTotal.toFixed(2)}</td>
@@ -47,7 +52,10 @@ function mostrarCarrito() {
       });
     });
 
-    const sumaTotal = precioTotal.reduce((acumulador, valorActual) => acumulador + valorActual, 0);
+    const sumaTotal = precioTotal.reduce(
+      (acumulador, valorActual) => acumulador + valorActual,
+      0
+    );
     inputPrecioTotal.value = sumaTotal;
 
     let carritoElement = document.querySelector("#carrito tbody");
@@ -69,7 +77,10 @@ function cambiarCantidad(index, detalleIndex, delta, cantidadMaxima) {
     if (detalle.cantidad < 1) {
       detalle.cantidad = 1; // Evitar cantidades menores a 1
     }
-    if (detalle.cantidad + delta <= cantidadMaxima && detalle.cantidad + delta >= 1) {
+    if (
+      detalle.cantidad + delta <= cantidadMaxima &&
+      detalle.cantidad + delta >= 1
+    ) {
       detalle.cantidad += delta;
     } else if (detalle.cantidad + delta > cantidadMaxima) {
       alert("¡Cantidad límite alcanzada!");
@@ -85,6 +96,11 @@ function eliminarItem(index, detalleIndex) {
   if (carrito[index].detalles[detalleIndex]) {
     carrito[index].detalles.splice(detalleIndex, 1); // Eliminar el detalle del carrito
     localStorage.setItem(`pedido_${numeroOrden}`, JSON.stringify(carrito));
+
+    let carritoActual = carrito[0].detalles;
+    let idPedido = carrito[0].pedido_numero;
+    actualizarPedido(carritoActual, idPedido);
+
     mostrarCarrito(); // Actualizar la visualización del carrito
   }
 }
@@ -92,8 +108,12 @@ function eliminarItem(index, detalleIndex) {
 let botonPagar = document.getElementById("boton-pagar");
 
 botonPagar.addEventListener("click", function () {
-  let inputPrecioTotal = parseFloat(document.getElementById("precio-total").value);
-  let dineroRecibido = parseFloat(document.getElementById("dinero-recibido").value);
+  let inputPrecioTotal = parseFloat(
+    document.getElementById("precio-total").value
+  );
+  let dineroRecibido = parseFloat(
+    document.getElementById("dinero-recibido").value
+  );
   let inputVuelto = document.getElementById("vuelto-cliente");
 
   // Verificar si se ha ingresado una cantidad de dinero recibida
@@ -105,7 +125,9 @@ botonPagar.addEventListener("click", function () {
 
   // Verificar si el dinero recibido es menor que el precio total
   if (dineroRecibido < inputPrecioTotal) {
-    alert("El dinero recibido es menor que el precio total. Por favor, ingrese una cantidad suficiente.");
+    alert(
+      "El dinero recibido es menor que el precio total. Por favor, ingrese una cantidad suficiente."
+    );
     inputVuelto.value = "";
     return; // Salir de la función si el dinero es insuficiente
   }
@@ -144,7 +166,8 @@ botonPagar.addEventListener("click", function () {
     inputVuelto.value = vueltoConDescuento.toFixed(2);
 
     const numeroOrden = localStorage.getItem("numeroPedido");
-    const carrito = JSON.parse(localStorage.getItem(`pedido_${numeroOrden}`)) || [];
+    const carrito =
+      JSON.parse(localStorage.getItem(`pedido_${numeroOrden}`)) || [];
     const cantidadProductos = carrito.length;
     const fecha = obtenerFechaActual();
 
@@ -158,7 +181,7 @@ botonPagar.addEventListener("click", function () {
       numero_orden: numeroOrden,
     };
 
-    fetch("/finanzas/guardarVentas", {
+    fetch("/finanzas/guardarVentas/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -172,85 +195,99 @@ botonPagar.addEventListener("click", function () {
         alert("Venta realizada con éxito.");
         // Guardar detalles de venta y eliminar pedido después de confirmar la venta
         guardarDetallesV();
-        eliminarPedidoCarrito();
+        // eliminarPedidoCarrito();
       })
       .catch((error) => {
         console.error("Error:", error);
       });
 
-      datosCambio = {
-        numero_orden : numeroOrden,
-      }
+    datosCambio = {
+      numero_orden: numeroOrden,
+    };
 
-      fetch("/ordenes/cambiarEstadoP/", {
+    fetch("/ordenes/cambiarEstadoP/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCookie("csrftoken"), // Añadir el token CSRF para la seguridad
+      },
+      body: JSON.stringify(datosCambio),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("ventaGuardada:", data);
+        alert("Venta realizada con éxito.");
+        // Guardar detalles de venta y eliminar pedido después de confirmar la venta
+        guardarDetallesV();
+      
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  } else {
+    inputVuelto.value = "";
+    alert("Venta cancelada.");
+  }
+});
+
+function guardarDetallesV() {
+  const numeroOrden = localStorage.getItem("numeroPedido");
+  let carrito = JSON.parse(localStorage.getItem(`pedido_${numeroOrden}`)) || [];
+
+  console.log(carrito)
+
+  // Verificar si carrito[0] tiene las propiedades esperadas
+  if (carrito.length > 0 && carrito[0].pedido_numero) {
+    const nombreCliente = carrito[0].nombre;
+    const correoCliente = carrito[0].correo;
+    const pedidoNumero = carrito[0].pedido_numero;
+
+    const formData = {
+      nombreCliente: nombreCliente,
+      correoCliente: correoCliente,
+      pedidoNumero: pedidoNumero,
+    };
+
+    try {
+      const response = fetch("/finanzas/guardarDetallesV/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "X-CSRFToken": getCookie("csrftoken"), // Añadir el token CSRF para la seguridad
         },
-        body: JSON.stringify(datosCambio),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("ventaGuardada:", data);
-          alert("Venta realizada con éxito.");
-          // Guardar detalles de venta y eliminar pedido después de confirmar la venta
-          guardarDetallesV();
-          eliminarPedidoCarrito();
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-  } else {
-    inputVuelto.value = "";
-    alert("Venta cancelada.");
-  }
+        body: JSON.stringify(formData),
+      });
 
-  
-});
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
 
-async function guardarDetallesV() {
-  const numeroOrden = localStorage.getItem("numeroPedido");
-  let carrito = JSON.parse(localStorage.getItem(`pedido_${numeroOrden}`)) || [];
-
-  let nombreCliente = carrito[0].nombre_cliente;
-  let correoCliente = carrito[0].correo_cliente;
-  let pedidoNumero = carrito[0].pedido_numero;
-
-  const formData = {
-    nombreCliente: nombreCliente,
-    correoCliente: correoCliente,
-    pedidoNumero: pedidoNumero,
-  };
-
-  fetch("/finanzas/guardarDetallesV/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRFToken": getCookie("csrftoken"), // Añadir el token CSRF para la seguridad
-    },
-    body: JSON.stringify(formData),
-  })
-    .then((response) => response.json())
-    .then((data) => {
+      const data = response.json();
       console.log("ventaGuardada:", data);
       alert("Detalles de la venta guardados con éxito.");
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
 
+      // Si deseas eliminar el pedido del carrito después de guardar los detalles de la venta
+      // eliminarPedidoCarrito();
+    } catch (error) {
+      console.error("Error:", error);
+      // Manejar el error de manera adecuada, por ejemplo, mostrando un mensaje al usuario
+      alert("Ocurrió un error al guardar los detalles de la venta. Por favor, inténtelo nuevamente.");
+    }
+  } else {
+    console.error("El objeto carrito[0] no tiene las propiedades esperadas.");
+    alert("No se pudo encontrar la información necesaria para guardar los detalles de la venta.");
+  }
+}
 function eliminarPedidoCarrito() {
   const numeroOrden = localStorage.getItem("numeroPedido");
   localStorage.removeItem(`pedido_${numeroOrden}`);
 
   if (localStorage.getItem(`pedido_${numeroOrden}`) === null) {
-    console.log('El carrito ha sido eliminado correctamente.');
-    localStorage.setItem("numeroPedido", "");
-    location.reload(); // Recargar la página después de eliminar el carrito
+    console.log("El carrito ha sido eliminado correctamente.");
+    // localStorage.setItem("numeroPedido", "");
+    // location.reload(); // Recargar la página después de eliminar el carrito
   } else {
-    console.log('El carrito aún existe.');
+    console.log("El carrito aún existe.");
   }
 }
 
@@ -268,6 +305,30 @@ function obtenerFechaActual() {
   const soloFechaFormateada = `${year}-${month}-${day}`;
 
   return soloFechaFormateada;
+}
+
+function actualizarPedido(carrito, id) {
+  datosActualizar = {
+    carrito: carrito,
+    idPedido: id,
+  };
+
+  fetch("/ordenes/actualizarOrdenes/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": getCookie("csrftoken"), // Añadir el token CSRF para la seguridad
+    },
+    body: JSON.stringify(datosActualizar),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("carritoActualizado:", data);
+      alert("actualizado con éxito.");
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
 
 function getCookie(name) {

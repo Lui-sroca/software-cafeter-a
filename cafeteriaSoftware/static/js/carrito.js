@@ -47,19 +47,19 @@ async function nuevaOrden() {
   const numeroOrden = await obtenerNumeroOrdenes(); // Usar await para esperar la respuesta
 
   // Crear una nueva orden vacía en el localStorage
-  const nuevaOrden = {
+  const nuevaOrden = [{
     detalles: [],
-    numero: numeroOrden,
-    nombre: "",
-    correo: "",
-  };
+    pedido_numero: numeroOrden,
+    nombre: "local",
+    correo: "luisroca647@gmail.com",
+  }];
 
   localStorage.setItem(`pedido_${numeroOrden}`, JSON.stringify(nuevaOrden));
   localStorage.setItem("numeroPedido", numeroOrden);
 
   let carrito = JSON.parse(localStorage.getItem(`pedido_${numeroOrden}`));
 
-  console.log("Datos que se enviarán al servidor:", carrito);
+  console.log("Datos que se enviarán al servidor:", carrito[0]);
 
   fetch("/ordenes/obtenerOrdenes/", {
     method: "POST",
@@ -67,7 +67,7 @@ async function nuevaOrden() {
       "Content-Type": "application/json",
       "X-CSRFToken": getCookie("csrftoken"), // Añadir el token CSRF para la seguridad
     },
-    body: JSON.stringify(carrito),
+    body: JSON.stringify(carrito[0]),
   })
     .then((response) => response.json())
     .then((data) => {
@@ -148,7 +148,7 @@ function agregarAlCarrito(
   console.log(carrito[0].detalles);
 
   let carritoActual = carrito[0].detalles;
-  let idPedido = carrito[0].id;
+  let idPedido = carrito[0].pedido_numero;
   actualizarPedido(carritoActual, idPedido);
 
   // Guardar el carrito en localStorage después de agregar o actualizar un producto

@@ -5,7 +5,8 @@ from adminInventario2.models import *
 from django.shortcuts import render
 from django.db.models import Count
 import matplotlib
-matplotlib.use('Agg')
+
+matplotlib.use("Agg")
 from django.shortcuts import render
 from django.views.generic import TemplateView
 import json
@@ -15,6 +16,13 @@ import json
 def guardarVentas(request):
     if request.method == "POST":
         try:
+            username = request.user.username
+            # first_name = request.user.first_name
+            # last_name = request.user.last_name
+            # email = request.user.email
+
+            # print(username, first_name, last_name, email)
+
             data = json.loads(request.body)
             fecha = data.get("fecha")
             cantidad = data.get("cantidad_productos")
@@ -26,18 +34,24 @@ def guardarVentas(request):
 
             # Guardar los datos en la base de datos
             guardar_venta = Ventas(
+                empleado=username,
                 fecha_creacion=fecha,
                 cantidad_productos=cantidad,
                 sub_precio_venta=sub_precio,
                 descuento=descuento,
                 tipo_descuento=tipo_descuento,
                 total_precio_venta=total_precio,
-                numero_orden=numero_orden  # Usar el número de orden proporcionado
+                numero_orden=numero_orden,  # Usar el número de orden proporcionado
             )
 
             guardar_venta.save()
 
-            return JsonResponse({"mensaje": "Venta guardada correctamente", "numero_orden": guardar_venta.numero_orden})
+            return JsonResponse(
+                {
+                    "mensaje": "Venta guardada correctamente",
+                    "numero_orden": guardar_venta.numero_orden,
+                }
+            )
 
         except json.JSONDecodeError:
             return JsonResponse({"error": "Error al procesar el JSON"}, status=400)
@@ -45,27 +59,28 @@ def guardarVentas(request):
             return JsonResponse({"error": str(e)}, status=500)
     return JsonResponse({"error": "Método no permitido"}, status=405)
 
+
 @csrf_exempt
 def guardarDetallesV(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body)
-            numero_orden = data.get("numero_orden")
-            nombre_cliente = data.get("nombre_cliente")
-            correo_cliente = data.get("correo_cliente")
+            numero_orden = data.get("pedidoNumero")
+            nombre_cliente = data.get("nombreCliente")
+            correo_cliente = data.get("correoCliente")
             pedido = data.get("pedido")
             cantidad_productos = data.get("cantidad_productos")
 
             # Obtener la venta correspondiente al número de orden
-            venta = get_object_or_404(Ventas, numero_orden=numero_orden)
+            venta = get_object_or_404(Ventas, numero_orden=int(numero_orden))
 
             # Crear un detalle de venta
             guardar_detalle = detalleVentas(
-                numero_orden=venta,
+                numero_orden=venta.numero_orden,  # Aquí asignamos el número de orden, no el objeto completo
                 nombre_cliente=nombre_cliente,
                 correo_cliente=correo_cliente,
                 pedido=pedido,
-                cantidad_productos=cantidad_productos
+                cantidad_productos=cantidad_productos,
             )
 
             guardar_detalle.save()
@@ -76,12 +91,13 @@ def guardarDetallesV(request):
             return JsonResponse({"error": "Error al procesar el JSON"}, status=400)
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
+
     return JsonResponse({"error": "Método no permitido"}, status=405)
 
 
 class listar_finanzas(TemplateView):
-    template_name = 'finanzas.html'
-    
+    template_name = "finanzas.html"
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         ventas = Ventas.objects.all()
@@ -90,5 +106,3 @@ class listar_finanzas(TemplateView):
         context["labels"] = labels
         context["datos"] = datos
         return context
-
-
