@@ -10,12 +10,7 @@ def index(request):
         productos = Productos.objects.all()
         categoria = Categoria.objects.all()
 
-        # username = request.user.username
-        # first_name = request.user.first_name
-        # last_name = request.user.last_name
-        # email = request.user.email
-
-        # print(username, first_name, last_name, email)
+     
 
     return render(
         request, "index.html", {"productos": productos, "categorias": categoria}

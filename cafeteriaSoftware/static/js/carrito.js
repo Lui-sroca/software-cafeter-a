@@ -47,19 +47,19 @@ async function nuevaOrden() {
   const numeroOrden = await obtenerNumeroOrdenes(); // Usar await para esperar la respuesta
 
   // Crear una nueva orden vacía en el localStorage
-  const nuevaOrden = {
+  const nuevaOrden = [{
     detalles: [],
-    numero: numeroOrden,
-    nombre: "",
-    correo: "",
-  };
+    pedido_numero: numeroOrden,
+    nombre: "local",
+    correo: "luisroca647@gmail.com",
+  }];
 
   localStorage.setItem(`pedido_${numeroOrden}`, JSON.stringify(nuevaOrden));
   localStorage.setItem("numeroPedido", numeroOrden);
 
   let carrito = JSON.parse(localStorage.getItem(`pedido_${numeroOrden}`));
 
-  console.log("Datos que se enviarán al servidor:", carrito);
+  console.log("Datos que se enviarán al servidor:", carrito[0]);
 
   fetch("/ordenes/obtenerOrdenes/", {
     method: "POST",
@@ -67,7 +67,7 @@ async function nuevaOrden() {
       "Content-Type": "application/json",
       "X-CSRFToken": getCookie("csrftoken"), // Añadir el token CSRF para la seguridad
     },
-    body: JSON.stringify(carrito),
+    body: JSON.stringify(carrito[0]),
   })
     .then((response) => response.json())
     .then((data) => {
@@ -115,44 +115,44 @@ function agregarAlCarrito(
   }
 
   // Obtener los detalles del pedido
-  let detalles = carrito.detalles;
+  let detalles = carrito[0].detalles;
 
-  console.log(carrito, detalles
+  console.log(carrito
   )
 
-  // // Verificar si el producto ya está en los detalles del pedido
-  // let productoExistente = detalles.find((item) => item.id === productoId);
+  // Verificar si el producto ya está en los detalles del pedido
+  let productoExistente = detalles.find((item) => item.id === productoId);
 
-  // if (productoExistente) {
-  //   var cantidad = productoExistente.cantidad;
+  if (productoExistente) {
+    var cantidad = productoExistente.cantidad;
 
-  //   if (cantidad >= productoCantidad) {
-  //     alert("Cantidad máxima alcanzada");
-  //   } else {
-  //     productoExistente.cantidad += 1;
-  //     alert("Producto agregado al carrito");
-  //     console.log(productoCantidad);
-  //     console.log(carrito);
-  //   }
-  // } else {
-  //   detalles.push({
-  //     id: productoId,
-  //     nombre: productoNombre,
-  //     precio: productoPrecio,
-  //     cantidad: 1,
-  //     cantidadMaxima: productoCantidad,
-  //   });
-  // }
+    if (cantidad >= productoCantidad) {
+      alert("Cantidad máxima alcanzada");
+    } else {
+      productoExistente.cantidad += 1;
+      alert("Producto agregado al carrito");
+      console.log(productoCantidad);
+      console.log(carrito);
+    }
+  } else {
+    detalles.push({
+      id: productoId,
+      nombre: productoNombre,
+      precio: productoPrecio,
+      cantidad: 1,
+      cantidadMaxima: productoCantidad,
+    });
+  }
 
-  // console.log("Producto agregado");
-  // console.log(carrito[0].detalles);
+  console.log("Producto agregado");
+  console.log(carrito[0].detalles);
 
-  // let carritoActual = carrito[0].detalles;
-  // let idPedido = carrito[0].id;
-  // actualizarPedido(carritoActual, idPedido);
+  let carritoActual = carrito[0].detalles;
+  let idPedido = carrito[0].pedido_numero;
+  actualizarPedido(carritoActual, idPedido);
 
-  // // Guardar el carrito en localStorage después de agregar o actualizar un producto
-  // localStorage.setItem(`pedido_${numeroOrden}`, JSON.stringify(carrito));
+  // Guardar el carrito en localStorage después de agregar o actualizar un producto
+  localStorage.setItem(`pedido_${numeroOrden}`, JSON.stringify(carrito));
 }
 
 // Mostrar el carrito actualizado
