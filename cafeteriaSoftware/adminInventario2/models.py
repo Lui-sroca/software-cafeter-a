@@ -26,7 +26,7 @@ class Ventas(models.Model):
     fecha_creacion = models.DateField(auto_now_add=True)
     cantidad_productos = models.IntegerField()
     sub_precio_venta = models.IntegerField()
-    descuento = models.IntegerField()
+    descuento = models.DecimalField(max_digits=5, decimal_places=5)
     tipo_descuento = models.CharField(max_length=1000)
     total_precio_venta = models.IntegerField()
     numero_orden = models.IntegerField()  # Clave única

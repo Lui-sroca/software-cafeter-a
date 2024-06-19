@@ -38,8 +38,8 @@ document.addEventListener("DOMContentLoaded", function() {
         "carrito-nav": "/inicio/carrito/",
         "inventario-nav": "/inicio/inventario",
         "finanzas-nav": "/finanzas",
-        "admin-nav": "/inicio/admin_interfaz",
-        "empleados-nav": "/empleados",
+        "admin-nav": "/usuarios/administrador",
+        "empleados-nav": "/usuarios/empleados",
         "pedidos-nav": "/ordenes/"
     };
 

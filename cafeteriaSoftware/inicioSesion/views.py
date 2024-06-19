@@ -3,6 +3,9 @@ from adminInventario2.models import *
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .form_registro import formularioRegistroUsuario
+from django.contrib.auth.decorators import login_required
+
+@login_required
 
 
 

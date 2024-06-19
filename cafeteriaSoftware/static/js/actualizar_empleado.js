@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const productoId = boton.dataset.id;
       console.log("Producto ID:", productoId); // Debugging: Verificar si el ID del producto se obtiene correctamente
 
-      fetch("/empleados/datosEnviados/", {
+      fetch("/usuarios/datosEnviados/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -84,7 +84,7 @@ function actualizarProducto() {
     .querySelector('meta[name="csrf-token"]')
     .getAttribute("content");
 
-  fetch("/empleados/actualizarDatos/", {
+  fetch("/usuarios/actualizarDatos/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

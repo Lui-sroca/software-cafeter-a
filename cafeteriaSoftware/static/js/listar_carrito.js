@@ -36,13 +36,11 @@ function mostrarCarrito() {
             <tr>
                 <td>${detalle.nombre}</td>
                 <td>
-                    <button class="btn-quantity" onclick="cambiarCantidad(${index}, ${detalleIndex}, -1, ${
-          detalle.cantidadMaxima
-        })" ${detalle.cantidad <= 1 ? "disabled" : ""}>-</button>
+                    <button class="btn-quantity" onclick="cambiarCantidad(${index}, ${detalleIndex}, -1, ${detalle.cantidadMaxima
+          })" ${detalle.cantidad <= 1 ? "disabled" : ""}>-</button>
                     ${detalle.cantidad}
-                    <button class="btn-quantity" onclick="cambiarCantidad(${index}, ${detalleIndex}, 1, ${
-          detalle.cantidadMaxima
-        })">+</button>
+                    <button class="btn-quantity" onclick="cambiarCantidad(${index}, ${detalleIndex}, 1, ${detalle.cantidadMaxima
+          })">+</button>
                 </td>
                 <td>$${detalle.precio.toFixed(2)}</td>
                 <td>$${preciosubTotal.toFixed(2)}</td>
@@ -153,14 +151,15 @@ botonPagar.addEventListener("click", function () {
 
     // Calcular el precio con descuento
     let precioConDescuento = inputPrecioTotal * (1 - descuento);
-
-    // Calcular el vuelto sin aplicar el descuento
+    console.log(precioConDescuento)
+    console.log(descuento)
+    // // Calcular el vuelto sin aplicar el descuento
     let vueltoSinDescuento = dineroRecibido - inputPrecioTotal;
 
-    // Calcular el descuento en el vuelto
+    // // Calcular el descuento en el vuelto
     let descuentoEnVuelto = vueltoSinDescuento * descuento;
 
-    // Calcular el vuelto con el descuento aplicado
+    // // Calcular el vuelto con el descuento aplicado
     let vueltoConDescuento = vueltoSinDescuento - descuentoEnVuelto;
 
     inputVuelto.value = vueltoConDescuento.toFixed(2);
@@ -174,10 +173,10 @@ botonPagar.addEventListener("click", function () {
     const formData = {
       fecha: fecha,
       cantidad_productos: cantidadProductos,
-      sub_precio: precioConDescuento,
+      sub_precio: inputPrecioTotal,
       descuento: descuento,
       tipo_descuento: tipoDescuento,
-      total_precio: vueltoConDescuento,
+      total_precio: precioConDescuento,
       numero_orden: numeroOrden,
     };
 
@@ -219,7 +218,8 @@ botonPagar.addEventListener("click", function () {
         alert("Venta realizada con éxito.");
         // Guardar detalles de venta y eliminar pedido después de confirmar la venta
         guardarDetallesV();
-      
+        eliminarPedidoCarrito();
+
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -234,58 +234,58 @@ function guardarDetallesV() {
   const numeroOrden = localStorage.getItem("numeroPedido");
   let carrito = JSON.parse(localStorage.getItem(`pedido_${numeroOrden}`)) || [];
 
-  console.log(carrito)
+  console.log(carrito[0].detalles)
 
   // Verificar si carrito[0] tiene las propiedades esperadas
-  if (carrito.length > 0 && carrito[0].pedido_numero) {
-    const nombreCliente = carrito[0].nombre;
-    const correoCliente = carrito[0].correo;
-    const pedidoNumero = carrito[0].pedido_numero;
 
-    const formData = {
-      nombreCliente: nombreCliente,
-      correoCliente: correoCliente,
-      pedidoNumero: pedidoNumero,
-    };
+  const nombreCliente = carrito[0].nombre;
+  const correoCliente = carrito[0].correo;
+  const pedidoNumero = carrito[0].pedido_numero;
+  const cantidad = carrito[0].detalles.length
 
-    try {
-      const response = fetch("/finanzas/guardarDetallesV/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": getCookie("csrftoken"), // Añadir el token CSRF para la seguridad
-        },
-        body: JSON.stringify(formData),
+  const formData = {
+    nombreCliente: nombreCliente,
+    correoCliente: correoCliente,
+    pedidoNumero: pedidoNumero,
+    cantidad_productos : cantidad,
+    pedido: carrito[0].detalles,
+  };
+
+
+
+  console.log(formData)
+
+  try {
+    fetch("/finanzas/guardarDetallesV/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCookie("csrftoken"), // Añadir el token CSRF para la seguridad
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Éxito:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
       });
+  }
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = response.json();
-      console.log("ventaGuardada:", data);
-      alert("Detalles de la venta guardados con éxito.");
-
-      // Si deseas eliminar el pedido del carrito después de guardar los detalles de la venta
-      // eliminarPedidoCarrito();
-    } catch (error) {
-      console.error("Error:", error);
-      // Manejar el error de manera adecuada, por ejemplo, mostrando un mensaje al usuario
-      alert("Ocurrió un error al guardar los detalles de la venta. Por favor, inténtelo nuevamente.");
-    }
-  } else {
-    console.error("El objeto carrito[0] no tiene las propiedades esperadas.");
-    alert("No se pudo encontrar la información necesaria para guardar los detalles de la venta.");
+  catch {
+    alert("no funciono")
   }
 }
+
 function eliminarPedidoCarrito() {
   const numeroOrden = localStorage.getItem("numeroPedido");
   localStorage.removeItem(`pedido_${numeroOrden}`);
 
   if (localStorage.getItem(`pedido_${numeroOrden}`) === null) {
     console.log("El carrito ha sido eliminado correctamente.");
-    // localStorage.setItem("numeroPedido", "");
-    // location.reload(); // Recargar la página después de eliminar el carrito
+    localStorage.setItem("numeroPedido", "");
+    location.reload(); // Recargar la página después de eliminar el carrito
   } else {
     console.log("El carrito aún existe.");
   }

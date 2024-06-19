@@ -10,10 +10,9 @@ matplotlib.use("Agg")
 from django.shortcuts import render
 from django.views.generic import TemplateView
 import json
-<<<<<<< Updated upstream
+from django.contrib.auth.decorators import login_required
 
-=======
->>>>>>> Stashed changes
+@login_required
 
 @csrf_exempt
 def guardarVentas(request):
