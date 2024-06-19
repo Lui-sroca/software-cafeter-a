@@ -10,7 +10,10 @@ matplotlib.use("Agg")
 from django.shortcuts import render
 from django.views.generic import TemplateView
 import json
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 
 @csrf_exempt
 def guardarVentas(request):

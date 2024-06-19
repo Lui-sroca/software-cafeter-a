@@ -114,12 +114,11 @@ function agregarAlCarrito(
     });
   }
 
+  console.log(carrito)
   // Obtener los detalles del pedido
   let detalles = carrito[0].detalles;
 
-  console.log(carrito
-  )
-
+  
   // Verificar si el producto ya está en los detalles del pedido
   let productoExistente = detalles.find((item) => item.id === productoId);
 
