@@ -73,5 +73,5 @@ function redirigirACarrito(pedidoNumero) {
   localStorage.setItem("numeroPedido", pedidoNumero);
 
   // Redirigir a la página del carrito sin el número de pedido en la URL
-  window.location.href = "/carrito/";
+  window.location.href = "/inicio/carrito";
 }

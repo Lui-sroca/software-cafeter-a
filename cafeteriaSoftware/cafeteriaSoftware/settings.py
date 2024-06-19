@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'inicioSesion',
     'corsheaders',
     'ordenes',
+    'Admin_Empleados'
     # Agregar la aplicación 'corsheaders'
 ]
 
@@ -62,9 +63,6 @@ TEMPLATES = [
     },
 ]
 
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'login'
-LOGOUT_REDIRECT_URL = 'login'
 
 WSGI_APPLICATION = 'cafeteriaSoftware.wsgi.application'
 
@@ -117,6 +115,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
+
+LOGIN_REDIRECT_URL = '/inicio/'
 
 
 STATIC_URL = '/static/'

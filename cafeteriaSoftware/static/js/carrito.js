@@ -115,44 +115,44 @@ function agregarAlCarrito(
   }
 
   // Obtener los detalles del pedido
-  let detalles = carrito[0].detalles;
+  let detalles = carrito.detalles;
 
-  console.log(carrito
+  console.log(carrito, detalles
   )
 
-  // Verificar si el producto ya está en los detalles del pedido
-  let productoExistente = detalles.find((item) => item.id === productoId);
+  // // Verificar si el producto ya está en los detalles del pedido
+  // let productoExistente = detalles.find((item) => item.id === productoId);
 
-  if (productoExistente) {
-    var cantidad = productoExistente.cantidad;
+  // if (productoExistente) {
+  //   var cantidad = productoExistente.cantidad;
 
-    if (cantidad >= productoCantidad) {
-      alert("Cantidad máxima alcanzada");
-    } else {
-      productoExistente.cantidad += 1;
-      alert("Producto agregado al carrito");
-      console.log(productoCantidad);
-      console.log(carrito);
-    }
-  } else {
-    detalles.push({
-      id: productoId,
-      nombre: productoNombre,
-      precio: productoPrecio,
-      cantidad: 1,
-      cantidadMaxima: productoCantidad,
-    });
-  }
+  //   if (cantidad >= productoCantidad) {
+  //     alert("Cantidad máxima alcanzada");
+  //   } else {
+  //     productoExistente.cantidad += 1;
+  //     alert("Producto agregado al carrito");
+  //     console.log(productoCantidad);
+  //     console.log(carrito);
+  //   }
+  // } else {
+  //   detalles.push({
+  //     id: productoId,
+  //     nombre: productoNombre,
+  //     precio: productoPrecio,
+  //     cantidad: 1,
+  //     cantidadMaxima: productoCantidad,
+  //   });
+  // }
 
-  console.log("Producto agregado");
-  console.log(carrito[0].detalles);
+  // console.log("Producto agregado");
+  // console.log(carrito[0].detalles);
 
-  let carritoActual = carrito[0].detalles;
-  let idPedido = carrito[0].id;
-  actualizarPedido(carritoActual, idPedido);
+  // let carritoActual = carrito[0].detalles;
+  // let idPedido = carrito[0].id;
+  // actualizarPedido(carritoActual, idPedido);
 
-  // Guardar el carrito en localStorage después de agregar o actualizar un producto
-  localStorage.setItem(`pedido_${numeroOrden}`, JSON.stringify(carrito));
+  // // Guardar el carrito en localStorage después de agregar o actualizar un producto
+  // localStorage.setItem(`pedido_${numeroOrden}`, JSON.stringify(carrito));
 }
 
 // Mostrar el carrito actualizado
