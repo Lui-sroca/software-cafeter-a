@@ -4,6 +4,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from adminInventario2.models import *
 import json
+from django.contrib.auth.decorators import login_required
+
+@login_required
 
 
 @csrf_exempt
@@ -15,7 +18,7 @@ def obtenerOrden(request):
             pedido = data.get("detalles")
             nombre = data.get("nombre")
             correo = data.get("correo")
-            numero_pedido = data.get("numero")
+            numero_pedido = data.get("pedido_numero")
 
             guardar_numero(numero_pedido)
 
@@ -49,9 +52,9 @@ def actualizarOrden(request):
             data = json.loads(request.body)
 
             pedido = data.get("carrito")
-            idPedido = data.get("idPedido")
+            numero_orden = data.get("idPedido")
 
-            ordenes = Ordenes.objects.get(id=idPedido)
+            ordenes = Ordenes.objects.get(numero=numero_orden)
 
             ordenes.detalles = pedido
 

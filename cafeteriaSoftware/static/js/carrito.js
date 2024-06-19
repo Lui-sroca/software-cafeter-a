@@ -1,6 +1,6 @@
 async function obtenerNumeroOrdenes() {
   try {
-    const response = await fetch("/obtenerNumerosOrden/", {
+    const response = await fetch("/ordenes/obtenerNumerosOrden/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -47,27 +47,27 @@ async function nuevaOrden() {
   const numeroOrden = await obtenerNumeroOrdenes(); // Usar await para esperar la respuesta
 
   // Crear una nueva orden vacía en el localStorage
-  const nuevaOrden = {
+  const nuevaOrden = [{
     detalles: [],
-    numero: numeroOrden,
-    nombre: "",
-    correo: "",
-  };
+    pedido_numero: numeroOrden,
+    nombre: "local",
+    correo: "luisroca647@gmail.com",
+  }];
 
   localStorage.setItem(`pedido_${numeroOrden}`, JSON.stringify(nuevaOrden));
   localStorage.setItem("numeroPedido", numeroOrden);
 
   let carrito = JSON.parse(localStorage.getItem(`pedido_${numeroOrden}`));
 
-  console.log("Datos que se enviarán al servidor:", carrito);
+  console.log("Datos que se enviarán al servidor:", carrito[0]);
 
-  fetch("/obtenerOrdenes/", {
+  fetch("/ordenes/obtenerOrdenes/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "X-CSRFToken": getCookie("csrftoken"), // Añadir el token CSRF para la seguridad
     },
-    body: JSON.stringify(carrito),
+    body: JSON.stringify(carrito[0]),
   })
     .then((response) => response.json())
     .then((data) => {
@@ -114,12 +114,11 @@ function agregarAlCarrito(
     });
   }
 
+  console.log(carrito)
   // Obtener los detalles del pedido
   let detalles = carrito[0].detalles;
 
-  console.log(carrito
-  )
-
+  
   // Verificar si el producto ya está en los detalles del pedido
   let productoExistente = detalles.find((item) => item.id === productoId);
 
@@ -148,7 +147,7 @@ function agregarAlCarrito(
   console.log(carrito[0].detalles);
 
   let carritoActual = carrito[0].detalles;
-  let idPedido = carrito[0].id;
+  let idPedido = carrito[0].pedido_numero;
   actualizarPedido(carritoActual, idPedido);
 
   // Guardar el carrito en localStorage después de agregar o actualizar un producto
@@ -163,7 +162,7 @@ function actualizarPedido(carrito, id) {
     idPedido: id,
   };
 
-  fetch("/actualizarOrdenes/", {
+  fetch("/ordenes/actualizarOrdenes/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

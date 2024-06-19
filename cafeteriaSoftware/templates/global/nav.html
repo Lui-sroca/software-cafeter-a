@@ -50,18 +50,20 @@
         </div>
         
         
-
         <div class="texto-funcion">
           <p>Equipo</p>
         </div>
+        {% if user.is_superuser %}
         <div class="funcion" id="admin-nav">
           <img type="icon" src="{% static 'img/admin.png' %}" />
           <p>Admin</p>
         </div>
+        {% endif %}
         <div class="funcion" id="empleados-nav">
           <img type="icon" src="{% static 'img/cuenta.png' %}" />
           <p>Empleados</p>
         </div>
+        
       </div>
     </div>
   </div>

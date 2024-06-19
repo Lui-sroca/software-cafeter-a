@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'css/output.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/style-empleado.css' %}" />
+  <title>Inventario SoftCoffe</title>
+</head>
+<meta name="csrf-token" content="{{ csrf_token }}">
+<body>
+  <div class="contenedor">
+    <div class="izquierda">
+      {% include 'global/nav.html' %}
+      <div class="derecha">
+        {% include 'global/logo-header.html' %}
+        <h1>Administradores</h1>
+
+
+
+        <!-- Tabla Bootstrap para listar empleados -->
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Nombre de usuario</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Correo electrónico</th>
+                {% comment %} <th>Contraseña</th> {% endcomment %}
+                <th>Acciones</th>
+                
+              </tr>
+            </thead>
+            <tbody>
+              {% for admin in admins %}
+              <tr>
+                <td>{{ admin.id }}</td>
+                <td>{{ admin.username }}</td>
+                <td>{{ admin.first_name }}</td>
+                <td>{{ admin.last_name }}</td>
+                <td>{{ admin.email }}</td>
+                {% comment %} <td>{{ admin.password }}</td> {% endcomment %}
+                <td>
+                  <!-- Botones de Acción: Actualizar y Eliminar -->
+                  <button href="" class="btn btn-primary btn-sm actualizar-btn" data-id="{{ admin.id }}">Editar</button>
+                  <button class="btn btn-danger btn-sm eliminar-btn" data-id="{{ admin.id }}"> Eliminar</button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        
+
+        <!-- Modal -->
+        <div id="modal-actualizar" class="modal-background">
+          <div class="form-container">
+            <h2>Actualizar Empleado</h2>
+            <form action="" method="POST">
+
+              {% csrf_token %}
+              <div class="flex">
+                <div class="mb-4">
+                  <label for="id">ID:</label>
+                  <input id="id-actualizar" type="text" placeholder="ID del empleado" class="form-control" disabled>
+                </div>
+                <div class="mb-4">
+                  <label for="username">Nombre de usuario:</label>
+                  <input id="username-actualizar" type="text" placeholder="Nombre de usuario" class="form-control">
+                </div>
+              </div>
+              <div class="flex">
+                <div class="mb-4">
+                  <label for="first_name">Nombres:</label>
+                  <input id="first_name-actualizar" type="text" placeholder="Nombres del empleado" class="form-control">
+                </div>
+                <div class="mb-4">
+                  <label for="last_name">Apellidos:</label>
+                  <input id="last_name-actualizar" type="text" placeholder="Apellidos del empleado" class="form-control">
+                </div>
+              </div>
+              <div class="mb-4">
+                <label for="email">Correo electrónico:</label>
+                <input id="email-actualizar" type="email" placeholder="Correo electrónico" class="form-control">
+              </div>
+              <div class="mb-4">
+                <label for="text">Contraseña:</label>
+                <input id="contraseña-actualizar" type="text" placeholder="Contraseña" class="form-control">
+              </div>
+              <div class="btn-container">
+                <button id="cerrarBtnActualizar" class="boton-cerrar" type="button">Cerrar</button>
+                <button id="ActualizarBtn" class="boton-guardar" type="button">Actualizar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        
+
+
+      </div>
+    </div>
+  </div>
+  <script src="{% static 'js/nav.js' %}"></script>
+  <script src="{% static 'js/actualizar_admin.js' %}"></script>
+  <script src="{% static 'js/eliminar_admin.js' %}"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
+    integrity="sha384-bqN9kG2ONpIZkQj7xTtzdbhLeO1u0q8SEpPbkc6A5Q/uHGQl0BYGQT6uN+g7fpxS"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+    crossorigin="anonymous"></script>
+
+</body>
+
+</html>

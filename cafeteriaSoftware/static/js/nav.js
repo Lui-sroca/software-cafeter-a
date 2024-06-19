@@ -34,13 +34,13 @@ document.addEventListener("DOMContentLoaded", function() {
     // Manejo de navegación
     var navItems = {
         "inicio-nav": "/inicio/",
-        "productos-nav": "/productos/",
-        "carrito-nav": "/carrito/",
-        "inventario-nav": "/inventario/",
-        "finanzas-nav": "/finanzas/",
-        "admin-nav": "/admin_interfaz/",
-        "empleados-nav": "/empleados/",
-        "pedidos-nav": "/listarPedido/"
+        "productos-nav": "/carrito/listar_productos",
+        "carrito-nav": "/inicio/carrito/",
+        "inventario-nav": "/inicio/inventario",
+        "finanzas-nav": "/finanzas",
+        "admin-nav": "/usuarios/administrador",
+        "empleados-nav": "/usuarios/empleados",
+        "pedidos-nav": "/ordenes/"
     };
 
     for (let id in navItems) {

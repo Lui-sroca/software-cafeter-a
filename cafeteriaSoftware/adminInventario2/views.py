@@ -6,6 +6,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from .models import *
 import json
+from django.contrib.auth.decorators import login_required
+
+@login_required
 
 
 @csrf_exempt

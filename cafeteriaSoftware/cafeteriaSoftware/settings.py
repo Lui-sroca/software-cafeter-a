@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'inicioSesion',
     'corsheaders',
     'ordenes',
+    'Admin_Empleados'
     # Agregar la aplicación 'corsheaders'
 ]
 
@@ -62,6 +63,7 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'cafeteriaSoftware.wsgi.application'
 
 
@@ -72,9 +74,9 @@ WSGI_APPLICATION = 'cafeteriaSoftware.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "adminSoftCoffe",
+        "NAME": "bdSoftCoffe",
         "USER": "postgres",
-        "PASSWORD": "2002",
+        "PASSWORD": "123456",
         "HOST": "localhost",
         "PORT": "5432",
     }
@@ -113,6 +115,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
+
+LOGIN_REDIRECT_URL = '/inicio/'
+LOGIN_URL = '/'
+# LOGOUT_REDIRECT_URL = ''
 
 
 STATIC_URL = '/static/'

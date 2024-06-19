@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const productoId = boton.dataset.id;
       console.log("Eliminar producto con ID:", productoId);
 
-      fetch("/datosEliminados/", {
+      fetch("/inventario/datosEliminados/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
