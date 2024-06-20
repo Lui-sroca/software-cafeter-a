@@ -1,27 +1,33 @@
+
+{% if user.is_superuser %}
 {% load static %}
 {% if messages %}
-{% for message in messages  %}
-  <div class="notification {{message.tags}}">
+{% for message in messages %}
+<div class="notification {{message.tags}}">
     {{ message }}
-  </div>
+</div>
 {% endfor %}
 {% endif %}
 
 <head>
-  <link rel="stylesheet" href="{% static 'css/style-registro.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style-registro.css' %}" />
 </head>
 
 {% block content %}
 <div class="container">
     <div class="form-wrapper">
-        <h2>Registro</h2>
+        <h2>Registro Administradores</h2>
         <form class="form" method="POST">
             {% csrf_token %}
-            
+
             {{ form.as_p }}
+            
             <button type="submit" id="submit" class="btn">Registrarse</button>
         </form>
+        <button id="boton-cancelar" class="">Cancelar</button>
     </div>
+    <script src="{% static 'js/registro_admin.js' %}"></script>
 </div>
 {% endblock %}
 
+{% endif %}

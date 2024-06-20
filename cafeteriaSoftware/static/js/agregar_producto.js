@@ -9,14 +9,14 @@ openModalBtn.addEventListener("click", function () {
 
 closeModalBtn.addEventListener("click", function () {
   modal.style.display = "none";
-  console.log("funciona")
+
+  console.log("funciona");
 });
 
 const submitBtn = document.getElementById("boton-guardar");
 
 submitBtn.addEventListener("click", function () {
-  modal.style.display = "none";
-  console.log("funciona")
+  console.log("funciona");
   // Obtener los valores de los campos del formulario
   const nombre = document.getElementById("nombre").value;
   const descripcion = document.getElementById("descripcion").value;
@@ -60,6 +60,11 @@ submitBtn.addEventListener("click", function () {
     .catch((error) => {
       console.error("Error:", error);
     });
+
+    
+    modal.style.display = "none";
+    location.reload();
+
 });
 
 function getCookie(name) {

@@ -2,18 +2,24 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from adminInventario2.models import *
-from django.shortcuts import render
-from django.db.models import Count
 import matplotlib
-
-matplotlib.use("Agg")
-from django.shortcuts import render
-from django.views.generic import TemplateView
 import json
 from django.contrib.auth.decorators import login_required
+from django.db.models.functions import TruncMonth
+from django.db.models import Count, Sum, F
+from datetime import datetime, timedelta
+from django.utils import timezone
+from django.shortcuts import render
+from datetime import datetime
+from django.http import HttpResponse
+from openpyxl import Workbook
+from openpyxl.utils import get_column_letter
+from openpyxl.styles import Font, Alignment, Border, Side, PatternFill
+
+matplotlib.use("Agg")
+
 
 @login_required
-
 @csrf_exempt
 def guardarVentas(request):
     if request.method == "POST":
@@ -97,14 +103,134 @@ def guardarDetallesV(request):
     return JsonResponse({"error": "Método no permitido"}, status=405)
 
 
-class listar_finanzas(TemplateView):
-    template_name = "finanzas.html"
+# class listar_finanzas(TemplateView):
+#     template_name = "finanzas.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        ventas = Ventas.objects.all()
-        labels = [venta.numero_orden for venta in ventas]
-        datos = [venta.total_precio_venta for venta in ventas]
-        context["labels"] = labels
-        context["datos"] = datos
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         ventas = Ventas.objects.all()
+#         labels = [venta.numero_orden for venta in ventas]
+#         datos = [venta.total_precio_venta for venta in ventas]
+#         context["labels"] = labels
+#         context["datos"] = datos
+#         return context
+
+
+def finanzas_view(request):
+    hoy = datetime.now()
+    ayer = hoy - timedelta(days=1)
+    # inicio_dia = timezone.make_aware(datetime.combine(hoy, datetime.min.time()), timezone.get_current_timezone())
+    # fin_dia = inicio_dia + timedelta(days=1)
+
+    print("dia de hoy: ", hoy)
+    print("ayer: ", ayer)
+    # Ventas por mes
+    ventas_por_mes = (
+        Ventas.objects.annotate(mes=TruncMonth("fecha_creacion"))
+        .values("mes")
+        .annotate(
+            total_ventas=Sum("total_precio_venta"),
+            total_productos=Sum("cantidad_productos"),
+        )
+        .order_by("mes")
+    )
+
+    # Comisiones por empleado con cantidad de ventas
+    comisiones_por_empleado = (
+        Ventas.objects.values("empleado")
+        .annotate(
+            total_ventas=Sum("total_precio_venta"),
+            total_comisiones=Sum(
+                F("total_precio_venta") * 0.10
+            ),  # Asumiendo una comisión del 10%
+            cantidad_ventas=Count("id"),
+        )
+        .order_by("empleado")
+    )
+
+    # Ventas de hoy
+    ventas_hoy = Ventas.objects.filter(fecha_creacion=hoy)
+
+    # Ventas de ayer
+    ventas_ayer = Ventas.objects.filter(fecha_creacion=ayer)
+
+    context = {
+        "ventas_por_mes": ventas_por_mes,
+        "comisiones_por_empleado": comisiones_por_empleado,
+        "ventas_hoy": ventas_hoy,
+        "ventas_ayer": ventas_ayer,
+    }
+
+    return render(request, "finanzas.html", context)
+
+
+
+def generar_reporte_excel(request):
+    # Crear un libro de trabajo (workbook)
+    wb = Workbook()
+
+    # Función para agregar datos a una hoja de trabajo con formato mejorado
+    def agregar_datos(hoja, titulo, datos):
+        hoja.title = titulo
+        headers = datos[0].keys() if datos else []
+        columnas = [get_column_letter(i + 1) for i in range(len(headers))]
+        
+        # Estilos para encabezados
+        header_font = Font(bold=True, size=12)
+        header_alignment = Alignment(horizontal='center', vertical='center', wrap_text=True)
+        header_fill = PatternFill(start_color="4CAF50", end_color="4CAF50", fill_type="solid")
+        header_border = Border(bottom=Side(border_style="thin"))
+
+        # Escribir encabezados
+        for col, header in zip(columnas, headers):
+            cell = hoja[f"{col}1"]
+            cell.value = header
+            cell.font = header_font
+            cell.alignment = header_alignment
+            cell.fill = header_fill
+            cell.border = header_border
+            hoja.column_dimensions[col].width = max(len(str(header)) + 4, 12)
+
+        # Estilos para datos
+        data_alignment = Alignment(horizontal='center', vertical='center', wrap_text=True)
+        data_border = Border(top=Side(border_style="thin"), bottom=Side(border_style="thin"))
+
+        # Escribir datos
+        for i, dato in enumerate(datos, start=2):
+            for j, key in enumerate(headers):
+                cell = hoja[f"{columnas[j]}{i}"]
+                cell.value = dato[key]
+                cell.alignment = data_alignment
+                cell.border = data_border
+                hoja.column_dimensions[columnas[j]].width = max(len(str(dato[key])) + 4, 12)
+
+    # Ventas por mes con más información
+    ventas_por_mes = Ventas.objects.annotate(
+        mes=TruncMonth('fecha_creacion')
+    ).values('mes').annotate(
+        total_ventas=Sum('total_precio_venta'),
+        total_productos=Sum('cantidad_productos'),
+        promedio_venta=Sum('total_precio_venta') / Sum('cantidad_productos'),
+        descuento_promedio=Sum('descuento') / Count('id'),
+        empleados_distintos=Count('empleado', distinct=True)
+    ).order_by('mes')
+
+    # Ventas de hoy
+    hoy = datetime.now()
+    
+    ventas_hoy = Ventas.objects.filter(fecha_creacion= hoy).values()
+
+    # Todas las ventas
+    todas_las_ventas = Ventas.objects.all().values()
+
+    # Agregar datos a las hojas
+    agregar_datos(wb.active, "Ventas por Mes", list(ventas_por_mes))
+    agregar_datos(wb.create_sheet(title="Ventas Hoy"), "Ventas Hoy", list(ventas_hoy))
+    agregar_datos(wb.create_sheet(title="Todas las Ventas"), "Todas las Ventas", list(todas_las_ventas))
+
+    # Guardar el libro de trabajo en memoria y devolver la respuesta HTTP
+    response = HttpResponse(content_type='application/vnd.openpyxl.sheet')
+    response['Content-Disposition'] = 'attachment; filename="reporte_ventas.xlsx"'
+    wb.save(response)
+
+    return response

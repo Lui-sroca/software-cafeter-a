@@ -6,8 +6,6 @@ from adminInventario2.models import *
 import json
 from django.contrib.auth.decorators import login_required
 
-@login_required
-
 
 @csrf_exempt
 def obtenerOrden(request):
@@ -44,6 +42,8 @@ def obtenerOrden(request):
             return JsonResponse({"error": str(e)}, status=500)
     return JsonResponse({"error": "Método no permitido"}, status=405)
 
+
+@login_required
 
 def actualizarOrden(request):
 

@@ -7,6 +7,6 @@ urlpatterns = [
     path("obtenerOrdenes/", obtenerOrden),
     path("actualizarOrdenes/", actualizarOrden),
     path("", listar_pedidos),
-    path("recibirOrden/", obtenerOrden),
+    # path("recibirOrden/", obtenerOrden),
     path('obtenerNumerosOrden/', numeroOrdenes),
 ]
