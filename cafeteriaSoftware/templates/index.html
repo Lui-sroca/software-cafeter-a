@@ -5,8 +5,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="{% static 'css/style-menu.css' %}" />
-  <title></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Jaro:opsz@6..72&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lilita+One&family=Oswald:wght@200..700&family=Poetsen+One&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style-nav-inventario.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/output.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/style-productos.css' %}" />
+  <title>Inventario SoftCoffe</title>
 </head>
 
 <body>
@@ -16,80 +22,53 @@
       <div class="derecha">
         {% include 'global/logo-header.html' %}
 
-        <div>
-
-        </div>
-
-        <!-- Sección de Ofertas Especiales -->
-        <div class="ofertas-especiales">
-          <p><strong>¡Ofertas Especiales!</strong> Descubre nuestros descuentos esta semana.</p>
-        </div>
-
         <div class="head-producto">
           <div class="titulo-producto">
-            <h1></h1>
+            <img class="mr-4" type="icon" src="{% static 'img/producto (2).png' %}" width="60px" />
+            <h1>Productos</h1>
           </div>
           <div class="buscador-producto">
-            <input type="text" placeholder="Buscar producto...">
-            <button>Buscar</button>
+            <input type="text" placeholder="Buscar en el inventario..." id="buscador"
+              class=" w-1/3 p-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <img class="mr-4" type="icon" src="{% static 'img/lupa.png' %}" width="30px" />
+          </div>
+          <div class="boton-nueva-orden">
+            <button onclick="nuevaOrden()">Nueva Orden</button>
           </div>
         </div>
 
         <div class="grid-container">
+          {% for producto in productos %}
           <div class="grid-item">
             <div class="imagen-productos">
-              <img src="{% static 'img/cafe.jpg' %}" alt="Cafe">
+              <img src="{{ producto.imagen }}" alt="Imagen de {{ producto.nombre }}" class="imagen-producto">
             </div>
             <div class="nombre-producto">
-              <p>Café Americano</p>
+              <p> {{ producto.nombre }}</p>
             </div>
             <div class="descripcion-producto">
-              <p>Espresso simple con agua caliente.</p>
+              <p>{{ producto.descripcion }}</p>
             </div>
-            <div class="boton-añadir">
-              <button>Añadir al carrito</button>
+            <div class="precio-producto">
+              <p>${{ producto.precio }}</p>
             </div>
-          </div>
-
-          <div class="grid-item">
-            <div class="imagen-productos">
-              <img src="{% static 'img/capuchino.jpg' %}" alt="Capuchino">
-            </div>
-            <div class="nombre-producto">
-              <p>Capuchino</p>
-            </div>
-            <div class="descripcion-producto">
-              <p>Espresso con leche espumada y un toque de canela.</p>
-            </div>
-            <div class="boton-añadir">
-              <button>Añadir al carrito</button>
+            <div class="boton-agregar-producto">
+              <button class="boton-añadir"
+                onclick="agregarAlCarrito({{ producto.id }}, '{{ producto.nombre }}', {{ producto.precio }}, {{ producto.cantidad }})">Agregar
+                al Carrito</button>
             </div>
           </div>
-
-          <div class="grid-item">
-            <div class="imagen-productos">
-              <img src="{% static 'img/latte.jpg' %}" alt="Latte">
-            </div>
-            <div class="nombre-producto">
-              <p>Latte</p>
-            </div>
-            <div class="descripcion-producto">
-              <p>Espresso con leche vaporizada y una fina capa de espuma.</p>
-            </div>
-            <div class="boton-añadir">
-              <button>Añadir al carrito</button>
-            </div>
-          </div>
-
-          <!-- Añadir más elementos del menú aquí -->
-
+          {% endfor %}
         </div>
-
+        
       </div>
     </div>
-  </div>
-</body>
 
+    <div id="carrito"></div>
+
+</body>
 <script src="{% static 'js/nav.js' %}"></script>
+<script src="{% static 'js/carrito.js' %}"></script>
+<script src="{% static 'js/filtro_producto.js' %}"></script>
 
 </html>
