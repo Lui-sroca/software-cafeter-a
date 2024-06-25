@@ -153,16 +153,13 @@ botonPagar.addEventListener("click", function () {
     let precioConDescuento = inputPrecioTotal * (1 - descuento);
     console.log(precioConDescuento)
     console.log(descuento)
+
     // // Calcular el vuelto sin aplicar el descuento
-    let vueltoSinDescuento = dineroRecibido - inputPrecioTotal;
+    let vueltoSinDescuento = dineroRecibido - precioConDescuento;
 
-    // // Calcular el descuento en el vuelto
-    let descuentoEnVuelto = vueltoSinDescuento * descuento;
+    console.log(vueltoSinDescuento)
 
-    // // Calcular el vuelto con el descuento aplicado
-    let vueltoConDescuento = vueltoSinDescuento - descuentoEnVuelto;
-
-    inputVuelto.value = vueltoConDescuento.toFixed(2);
+    inputVuelto.value = vueltoSinDescuento;
 
     const numeroOrden = localStorage.getItem("numeroPedido");
     const carrito =

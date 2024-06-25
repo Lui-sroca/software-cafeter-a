@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then((data) => {
           console.log("Empleado eliminado:", data);
+          location.reload();
           // Aquí podrías realizar alguna acción adicional, como actualizar la lista de productos
           // por ejemplo, recargar la página o eliminar el elemento del DOM.
         })

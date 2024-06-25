@@ -26,9 +26,11 @@
       <lord-icon
     src="https://cdn.lordicon.com/hrjifpbq.json"
     trigger="hover"
-    style="width:100px;height:100px">
+    style="width:50px;height:50px">
 </lord-icon>
-      <h2 class="employee-name">{{ request.user.first_name }}</h2>
+     {% block content %}
+      <h2 class="employee-name">{{ request.user.username }}</h2>
+      {% endblock %}
     </div>
   </div>
 

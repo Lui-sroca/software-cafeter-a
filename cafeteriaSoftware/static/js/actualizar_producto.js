@@ -126,6 +126,7 @@ function actualizarProducto() {
     .then((data) => {
       console.log("Éxito:", data);
       document.getElementById("modal-actualizar").style.display = "none";
+      location.reload();
     })
     .catch((error) => {
       console.error("Error:", error);

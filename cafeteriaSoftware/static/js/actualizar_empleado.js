@@ -1,4 +1,15 @@
+
+let botonAgregar = document.getElementById("boton-agregar");
+
+botonAgregar.addEventListener("click", function () {
+  window.location.href = "/registroEmpleado";
+  // console.log("funciona");
+});
+
+
 document.addEventListener("DOMContentLoaded", function () {
+
+
   const botonesActualizar = document.querySelectorAll(".actualizar-btn");
   const closeModalBtnActualizar = document.getElementById(
     "cerrarBtnActualizar"
@@ -96,6 +107,7 @@ function actualizarProducto() {
     .then((data) => {
       console.log("Éxito:", data);
       document.getElementById("modal-actualizar").style.display = "none";
+      location.reload();
     })
     .catch((error) => {
       console.error("Error:", error);

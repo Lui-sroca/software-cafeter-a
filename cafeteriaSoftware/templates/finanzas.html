@@ -1,64 +1,145 @@
-<!-- {% load static %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/style-finanzas.css' %}" />
   
-  <title>Título de tu página</title>
 
-  <!-- Enlace a Chart.js desde un CDN -->
- 
-
-  <!-- Aquí puedes incluir tus otras etiquetas de encabezado, como enlaces a estilos CSS, etc. -->
 </head>
 
 <body>
-  
-  <!-- Contenido de tu página -->
+
   <div class="contenedor">
     <div class="izquierda">
       {% include 'global/nav.html' %}
       <div class="derecha">
         {% include 'global/logo-header.html' %}
 
-        <h1>Ventas Mensuales</h1>
-        <canvas id="myChart"></canvas>
-      </div>
-    </div>
-  </div>
 
-  <!-- Tu script de Chart.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
-  <script>
-    $(document).ready(function () {
-      const ctx = document.getElementById('myChart');
+        <div>
+          <canvas id="grafica_ventas"  width="100" height="50"></canvas>
+        </div>
 
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: {{ labels|safe }},
-          datasets: [{
-            label: 'Monto de Ventas',
-            data: {{ datos|safe }},
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
-        }
-      });
-    });
-  </script>
 
-  <!-- Otros scripts y enlaces a archivos JS -->
-  <script src="{% static 'js/nav.js' %}"></script>
-  <script src="{% static 'js/finanzas.js' %}"></script>
+        
+        <button id="descargar-excel" class="btn">
+          descargar Excell
+        </button>
+
+        <div class="reporte">
+          <h2 class="titulo-seccion">Ventas por Mes</h2>
+          <table class="tabla">
+            <thead>
+              <tr>
+                <th>Mes</th>
+                <th>Total Ventas</th>
+                <th>Total Productos</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for venta_mes in ventas_por_mes %}
+              <tr>
+                <td>{{ venta_mes.mes|date:"F Y" }}</td>
+                <td>{{ venta_mes.total_ventas }}</td>
+                <td>{{ venta_mes.total_productos }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="reporte">
+          <h2 class="titulo-seccion">Comisiones por Empleado</h2>
+          <table class="tabla">
+            <thead>
+              <tr>
+                <th>Empleado</th>
+                <th>Total Ventas</th>
+                <th>Total Comisiones</th>
+                <th>Cantidad de Ventas</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for comision_empleado in comisiones_por_empleado %}
+              <tr>
+                <td>{{ comision_empleado.empleado }}</td>
+                <td>{{ comision_empleado.total_ventas }}</td>
+                <td>{{ comision_empleado.total_comisiones }}</td>
+                <td>{{ comision_empleado.cantidad_ventas }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="reporte">
+          <h2 class="titulo-seccion">Ventas de Hoy</h2>
+          <table class="tabla">
+            <thead>
+              <tr>
+                <th>Número de Orden</th>
+                <th>Empleado</th>
+                <th>Cantidad Productos</th>
+                <th>Total Precio Venta</th>
+                <th>Fecha de Creación</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for venta_hoy in ventas_hoy %}
+              <tr>
+                <td>{{ venta_hoy.numero_orden }}</td>
+                <td>{{ venta_hoy.empleado }}</td>
+                <td>{{ venta_hoy.cantidad_productos }}</td>
+                <td>{{ venta_hoy.total_precio_venta }}</td>
+                <td>{{ venta_hoy.fecha_creacion }}</td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="5">No hay ventas registradas hoy.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="reporte">
+          <h2 class="titulo-seccion">Ventas de Ayer</h2>
+          <table class="tabla">
+            <thead>
+              <tr>
+                <th>Número de Orden</th>
+                <th>Empleado</th>
+                <th>Cantidad Productos</th>
+                <th>Total Precio Venta</th>
+                <th>Fecha de Creación</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for venta_ayer in ventas_ayer %}
+              <tr>
+                <td>{{ venta_ayer.numero_orden }}</td>
+                <td>{{ venta_ayer.empleado }}</td>
+                <td>{{ venta_ayer.cantidad_productos }}</td>
+                <td>{{ venta_ayer.total_precio_venta }}</td>
+                <td>{{ venta_ayer.fecha_creacion }}</td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="5">No hay ventas registradas ayer.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Otros scripts y enlaces a archivos JS -->
+        <script src="{% static 'js/nav.js' %}"></script>
+        <script src="{% static 'js/finanzas.js' %}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </body>
 
-</html> -->
+</html>
