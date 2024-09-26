@@ -29,7 +29,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for pedido in pedidos %}
+                        {% comment %} {% for pedido in pedidos %} {% endcomment %}
                         <tr>
                             <td>{{ pedido.numero }}</td>
                             <td>{{ pedido.nombre_cliente }}</td>
@@ -48,7 +48,7 @@
                                     )" data-detalles="{{ pedido.detalles|escapejs }}">Agregar al Carrito</button>
                             </td>
                         </tr>
-                        {% endfor %}
+                            {% comment %} {% endfor %} {% endcomment %}
                     </tbody>
                 </table>
             </div>

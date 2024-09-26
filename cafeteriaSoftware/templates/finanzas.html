@@ -40,13 +40,13 @@
               </tr>
             </thead>
             <tbody>
-              {% for venta_mes in ventas_por_mes %}
+              {% comment %} {% for venta_mes in ventas_por_mes %} {% endcomment %}
               <tr>
                 <td>{{ venta_mes.mes|date:"F Y" }}</td>
                 <td>{{ venta_mes.total_ventas }}</td>
                 <td>{{ venta_mes.total_productos }}</td>
               </tr>
-              {% endfor %}
+              {% comment %} {% endfor %} {% endcomment %}
             </tbody>
           </table>
         </div>
@@ -63,14 +63,14 @@
               </tr>
             </thead>
             <tbody>
-              {% for comision_empleado in comisiones_por_empleado %}
+              {% comment %} {% for comision_empleado in comisiones_por_empleado %} {% endcomment %}
               <tr>
                 <td>{{ comision_empleado.empleado }}</td>
                 <td>{{ comision_empleado.total_ventas }}</td>
                 <td>{{ comision_empleado.total_comisiones }}</td>
                 <td>{{ comision_empleado.cantidad_ventas }}</td>
               </tr>
-              {% endfor %}
+              {% comment %} {% endfor %} {% endcomment %}
             </tbody>
           </table>
         </div>
@@ -88,7 +88,7 @@
               </tr>
             </thead>
             <tbody>
-              {% for venta_hoy in ventas_hoy %}
+              {% comment %} {% for venta_hoy in ventas_hoy %} {% endcomment %}
               <tr>
                 <td>{{ venta_hoy.numero_orden }}</td>
                 <td>{{ venta_hoy.empleado }}</td>
@@ -96,11 +96,11 @@
                 <td>{{ venta_hoy.total_precio_venta }}</td>
                 <td>{{ venta_hoy.fecha_creacion }}</td>
               </tr>
-              {% empty %}
+              {% comment %} {% empty %} {% endcomment %}
               <tr>
                 <td colspan="5">No hay ventas registradas hoy.</td>
               </tr>
-              {% endfor %}
+              {% comment %} {% endfor %} {% endcomment %}
             </tbody>
           </table>
         </div>
@@ -118,7 +118,7 @@
               </tr>
             </thead>
             <tbody>
-              {% for venta_ayer in ventas_ayer %}
+              {% comment %} {% for venta_ayer in ventas_ayer %} {% endcomment %}
               <tr>
                 <td>{{ venta_ayer.numero_orden }}</td>
                 <td>{{ venta_ayer.empleado }}</td>
@@ -126,11 +126,11 @@
                 <td>{{ venta_ayer.total_precio_venta }}</td>
                 <td>{{ venta_ayer.fecha_creacion }}</td>
               </tr>
-              {% empty %}
+              {% comment %} {% empty %} {% endcomment %}
               <tr>
                 <td colspan="5">No hay ventas registradas ayer.</td>
               </tr>
-              {% endfor %}
+              {% comment %} {% endfor %} {% endcomment %}
             </tbody>
           </table>
         </div>

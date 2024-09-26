@@ -38,7 +38,7 @@
         </div>
 
         <div class="grid-container">
-          {% for producto in productos %}
+          {% comment %} {% for producto in productos %} {% endcomment %}
           <div class="grid-item">
             <div class="imagen-productos">
               <img src="{{ producto.imagen }}" alt="Imagen de {{ producto.nombre }}" class="imagen-producto">
@@ -58,7 +58,7 @@
                 al Carrito</button>
             </div>
           </div>
-          {% endfor %}
+          {% comment %} {% endfor %} {% endcomment %}
         </div>
         
       </div>

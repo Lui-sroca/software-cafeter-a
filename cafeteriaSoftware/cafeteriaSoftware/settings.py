@@ -26,11 +26,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'interfazInventario',
-    'adminInventario2',
     'inicioSesion',
     'corsheaders',
     'ordenes',
-    'Admin_Empleados'
+    'Admin_Empleados',
+    'adminInventario'
     # Agregar la aplicación 'corsheaders'
 ]
 
@@ -74,9 +74,9 @@ WSGI_APPLICATION = 'cafeteriaSoftware.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "bdSoftCoffe",
+        "NAME": "BD_SENASOFT",
         "USER": "postgres",
-        "PASSWORD": "2002",
+        "PASSWORD": "admin2024",
         "HOST": "localhost",
         "PORT": "5432",
     }

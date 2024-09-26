@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from adminInventario2.models import *
+from adminInventario.models import *
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .form_registro import formularioRegistroUsuario
